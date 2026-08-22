@@ -1,0 +1,1542 @@
+{
+  "nodes": [
+    {
+      "id": "pkg_scrape_werse",
+      "label": "scrape-werse",
+      "file_type": "code",
+      "type": "package",
+      "ecosystem": "python",
+      "source_file": "pyproject.toml",
+      "source_location": "L1",
+      "version": "0.1.0",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_init",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator",
+      "label": "pipeline_orchestrator.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "label": "run_pipeline()",
+      "file_type": "code",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L62",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_main",
+      "label": "main()",
+      "file_type": "code",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L194",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_rationale_1",
+      "label": "Pipeline Orchestrator — CLI / Orchestration Layer (Top-Level) ==================",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_rationale_68",
+      "label": "Execute one full ingestion pipeline run.      Args:         urls: Target URLs to",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L68",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_rationale_195",
+      "label": "Main entrypoint: reads config from environment and runs the pipeline.      Requi",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L195",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_rationale_170",
+      "label": "# TODO: Hook in alerting (email/Slack/PagerDuty) here",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L170",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_init",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_init",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client",
+      "label": "brightdata_client.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "label": "BrightDataClient",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L25",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L41",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_trigger_scraper",
+      "label": ".trigger_scraper()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L50",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_py_any",
+      "label": "Any",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
+      "label": ".get_dataset()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L89",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_initiate_self_heal",
+      "label": ".initiate_self_heal()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L114",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_auto_approve_heal",
+      "label": ".auto_approve_heal()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L144",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
+      "label": "create_client_from_env()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L228",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_1",
+      "label": "Bright Data Scraper Studio Client — Service Layer ==============================",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_26",
+      "label": "Async client to manage Scraper Studio runs and autonomous self-healing.      The",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L26",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_53",
+      "label": "Trigger an extraction run via POST /dca/trigger.          Args:             coll",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L53",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_90",
+      "label": "Fetch the extracted JSON results for a completed run.          Args:",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L90",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_115",
+      "label": "Trigger the Cloud AI self-heal loop to repair broken selectors.          This ca",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L115",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_150",
+      "label": "Poll the healing job and programmatically accept the AI-proposed diff.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L150",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_229",
+      "label": "Convenience factory that reads BRIGHTDATA_API_KEY from the environment.      Rai",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L229",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_init",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync",
+      "label": "firebase_sync.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "label": "FirestoreRESTClient",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L33",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_init",
+      "label": ".__init__()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L48",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_generate_doc_id",
+      "label": "._generate_doc_id()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L62",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_convert_to_firestore_fields",
+      "label": "._convert_to_firestore_fields()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L81",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_py_any",
+      "label": "Any",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "label": ".upsert_opportunity()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L127",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_batch_upsert",
+      "label": ".batch_upsert()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L171",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_create_client_from_env",
+      "label": "create_client_from_env()",
+      "file_type": "code",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L200",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_rationale_1",
+      "label": "Firebase Firestore REST Client — Service Layer =================================",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_rationale_34",
+      "label": "Async client to interact with Google Firestore REST API.      Upserts Opportunit",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L34",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_rationale_63",
+      "label": "Generate a deterministic, URL-safe document ID from an opportunity URL.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L63",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_rationale_84",
+      "label": "Convert a flat Python dict into the Firestore REST typed-value format.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L84",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_rationale_130",
+      "label": "Write or overwrite an opportunity in Firestore using a REST PATCH.          The",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L130",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_rationale_174",
+      "label": "Upsert a list of opportunity records sequentially.          Note: Firestore REST",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L174",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_rationale_201",
+      "label": "Convenience factory that reads Firebase config from the environment.      Raises",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L201",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_init",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_init",
+      "label": "__init__.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/__init__.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models",
+      "label": "models.py",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_opportunitytype",
+      "label": "OpportunityType",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L20",
+      "_origin": "ast"
+    },
+    {
+      "id": "str",
+      "label": "str",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "enum",
+      "label": "Enum",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_difficultylevel",
+      "label": "DifficultyLevel",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L31",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_locationtype",
+      "label": "LocationType",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L39",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_opportunity",
+      "label": "Opportunity",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L50",
+      "_origin": "ast"
+    },
+    {
+      "id": "basemodel",
+      "label": "BaseModel",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "label": ".validate_future_deadline()",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L115",
+      "_origin": "ast"
+    },
+    {
+      "id": "datetime",
+      "label": "datetime",
+      "file_type": "code",
+      "source_file": "",
+      "source_location": "",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_opportunity_coerce_url_string",
+      "label": ".coerce_url_string()",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L130",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_rationale_1",
+      "label": "Domain Models — Layer 0 (Foundation) ===================================== Pydan",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L1",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_rationale_21",
+      "label": "Classification of the AI opportunity.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L21",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_rationale_32",
+      "label": "Skill level required for the opportunity.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L32",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_rationale_40",
+      "label": "Modality of the opportunity.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L40",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_rationale_51",
+      "label": "Core domain schema representing a single AI opportunity.      This model is the",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L51",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_rationale_116",
+      "label": "Soft-validates that the deadline is in the future.         Expired deadlines are",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L116",
+      "_origin": "ast"
+    },
+    {
+      "id": "scrape_werse_shared_models_models_rationale_131",
+      "label": "Accept plain strings alongside HttpUrl objects.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L131",
+      "_origin": "ast"
+    }
+  ],
+  "edges": [
+    {
+      "source": "pkg_scrape_werse",
+      "target": "pkg_pydantic",
+      "relation": "depends_on",
+      "context": "dependency",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pyproject.toml",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "pkg_scrape_werse",
+      "target": "pkg_httpx",
+      "relation": "depends_on",
+      "context": "dependency",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pyproject.toml",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "pkg_scrape_werse",
+      "target": "pkg_python_dotenv",
+      "relation": "depends_on",
+      "context": "dependency",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "pyproject.toml",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "asyncio",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "logging",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L24",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "sys",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "dotenv",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L28",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_scraper_client_brightdata_client",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_scraper_sync_firebase_sync",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_shared_models_models",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "references",
+      "context": "parameter_type",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_pipeline_orchestrator_main",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L194",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_main",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_main",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L231",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_main",
+      "target": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L237",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_rationale_1",
+      "target": "scrape_werse_pipeline_orchestrator",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_rationale_68",
+      "target": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L68",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_rationale_195",
+      "target": "scrape_werse_pipeline_orchestrator_main",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L195",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_rationale_170",
+      "target": "scrape_werse_pipeline_orchestrator",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L170",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "asyncio",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "logging",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "typing",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L15",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "httpx",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L17",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "dotenv",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L18",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L41",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_trigger_scraper",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient_trigger_scraper",
+      "target": "scrape_werse_scraper_client_brightdata_client_py_any",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
+      "target": "scrape_werse_scraper_client_brightdata_client_py_any",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L89",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_initiate_self_heal",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L114",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_auto_approve_heal",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L144",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client",
+      "target": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L228",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L228",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L241",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_1",
+      "target": "scrape_werse_scraper_client_brightdata_client",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_26",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_53",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_trigger_scraper",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L53",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_90",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L90",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_115",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_initiate_self_heal",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_150",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_auto_approve_heal",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_229",
+      "target": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/client/brightdata_client.py",
+      "source_location": "L229",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "hashlib",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "logging",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "os",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L22",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "typing",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L23",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "httpx",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L25",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "dotenv",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L26",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L33",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_init",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L48",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_generate_doc_id",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_convert_to_firestore_fields",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_convert_to_firestore_fields",
+      "target": "scrape_werse_scraper_sync_firebase_sync_py_any",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_convert_to_firestore_fields",
+      "target": "scrape_werse_scraper_sync_firebase_sync_py_any",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L81",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "target": "scrape_werse_scraper_sync_firebase_sync_py_any",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L127",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_batch_upsert",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L171",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_batch_upsert",
+      "target": "scrape_werse_scraper_sync_firebase_sync_py_any",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L171",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync",
+      "target": "scrape_werse_scraper_sync_firebase_sync_create_client_from_env",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L200",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_create_client_from_env",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "references",
+      "context": "return_type",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L200",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_generate_doc_id",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L148",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_convert_to_firestore_fields",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L150",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_batch_upsert",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L191",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_create_client_from_env",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L214",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_rationale_1",
+      "target": "scrape_werse_scraper_sync_firebase_sync",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_rationale_34",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L34",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_rationale_63",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_generate_doc_id",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L63",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_rationale_84",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_convert_to_firestore_fields",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L84",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_rationale_130",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L130",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_rationale_174",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_batch_upsert",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L174",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_scraper_sync_firebase_sync_rationale_201",
+      "target": "scrape_werse_scraper_sync_firebase_sync_create_client_from_env",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/scraper/sync/firebase_sync.py",
+      "source_location": "L201",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "datetime",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L10",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "enum",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L11",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "typing",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L12",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "pydantic",
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L14",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "scrape_werse_shared_models_models_opportunitytype",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_opportunitytype",
+      "target": "str",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_opportunitytype",
+      "target": "enum",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L20",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "scrape_werse_shared_models_models_difficultylevel",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_difficultylevel",
+      "target": "str",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_difficultylevel",
+      "target": "enum",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "scrape_werse_shared_models_models_locationtype",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_locationtype",
+      "target": "str",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_locationtype",
+      "target": "enum",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L39",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_opportunity",
+      "target": "basemodel",
+      "relation": "inherits",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L50",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_opportunity",
+      "target": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "target": "datetime",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "target": "datetime",
+      "relation": "references",
+      "context": "generic_arg",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L115",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_opportunity",
+      "target": "scrape_werse_shared_models_models_opportunity_coerce_url_string",
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L130",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_rationale_1",
+      "target": "scrape_werse_shared_models_models",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L1",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_rationale_21",
+      "target": "scrape_werse_shared_models_models_opportunitytype",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L21",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_rationale_32",
+      "target": "scrape_werse_shared_models_models_difficultylevel",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_rationale_40",
+      "target": "scrape_werse_shared_models_models_locationtype",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L40",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_rationale_51",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L51",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_rationale_116",
+      "target": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L116",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_shared_models_models_rationale_131",
+      "target": "scrape_werse_shared_models_models_opportunity_coerce_url_string",
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L131",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L30",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L31",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L32",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L107",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_main",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L230",
+      "weight": 1.0
+    },
+    {
+      "source": "scrape_werse_pipeline_orchestrator_main",
+      "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L231",
+      "weight": 1.0
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

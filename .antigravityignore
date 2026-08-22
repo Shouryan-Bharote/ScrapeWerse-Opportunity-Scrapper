@@ -1,0 +1,43 @@
+# === Tier 1: never let these reach the AI ===
+.env
+.env.*
+!.env.example
+.envrc
+*.pem
+*.key
+*.p12
+secrets/
+secrets.*.json
+credentials.json
+service-account-*.json
+firebase-adminsdk-*.json
+**/google-services.json
+**/GoogleService-Info.plist
+ 
+# === Tier 2: do not waste tokens ===
+node_modules/
+.next/
+out/
+dist/
+build/
+target/
+.gradle/
+.venv/
+venv/
+__pycache__/
+.cache/
+coverage/
+*.log
+*.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+ 
+# === Tier 3: stale or noisy code that misleads the model ===
+_backup/
+_archive/
+**/legacy/
+**/__deprecated__/
+**/old/
+generated/types-old.d.ts
+docs/snapshots/
