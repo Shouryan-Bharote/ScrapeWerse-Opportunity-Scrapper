@@ -4,6 +4,56 @@
   "graph": {},
   "nodes": [
     {
+      "label": "dry_run.py",
+      "file_type": "code",
+      "source_file": "dry_run.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "dry_run",
+      "community": 0,
+      "norm_label": "dry_run.py"
+    },
+    {
+      "label": "dry_run()",
+      "file_type": "code",
+      "source_file": "dry_run.py",
+      "source_location": "L32",
+      "_origin": "ast",
+      "id": "dry_run_dry_run",
+      "community": 0,
+      "norm_label": "dry_run()"
+    },
+    {
+      "label": "Dry-run validation script. Scrapes all 4 sources, validates data through the Pyd",
+      "file_type": "rationale",
+      "source_file": "dry_run.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "dry_run_rationale_1",
+      "community": 0,
+      "norm_label": "dry-run validation script. scrapes all 4 sources, validates data through the pyd"
+    },
+    {
+      "label": "inspect_datasets.py",
+      "file_type": "code",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "inspect_datasets",
+      "community": 0,
+      "norm_label": "inspect_datasets.py"
+    },
+    {
+      "label": "inspect()",
+      "file_type": "code",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "inspect_datasets_inspect",
+      "community": 0,
+      "norm_label": "inspect()"
+    },
+    {
       "label": "scrape-werse",
       "file_type": "code",
       "type": "package",
@@ -37,10 +87,20 @@
       "norm_label": "pipeline_orchestrator.py"
     },
     {
-      "label": "run_pipeline()",
+      "label": "normalize_row()",
       "file_type": "code",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
       "source_location": "L62",
+      "_origin": "ast",
+      "id": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "community": 0,
+      "norm_label": "normalize_row()"
+    },
+    {
+      "label": "run_pipeline()",
+      "file_type": "code",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L106",
       "_origin": "ast",
       "id": "scrape_werse_pipeline_orchestrator_run_pipeline",
       "community": 4,
@@ -50,7 +110,7 @@
       "label": "main()",
       "file_type": "code",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L194",
+      "source_location": "L244",
       "_origin": "ast",
       "id": "scrape_werse_pipeline_orchestrator_main",
       "community": 4,
@@ -67,32 +127,42 @@
       "norm_label": "pipeline orchestrator \u2014 cli / orchestration layer (top-level) =================="
     },
     {
+      "label": "Normalize a raw scraper output row into a flat dict that matches the     Opportu",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L63",
+      "_origin": "ast",
+      "id": "scrape_werse_pipeline_orchestrator_rationale_63",
+      "community": 0,
+      "norm_label": "normalize a raw scraper output row into a flat dict that matches the     opportu"
+    },
+    {
       "label": "Execute one full ingestion pipeline run.      Args:         urls: Target URLs to",
       "file_type": "rationale",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L68",
+      "source_location": "L112",
       "_origin": "ast",
-      "id": "scrape_werse_pipeline_orchestrator_rationale_68",
+      "id": "scrape_werse_pipeline_orchestrator_rationale_112",
       "community": 4,
       "norm_label": "execute one full ingestion pipeline run.      args:         urls: target urls to"
     },
     {
-      "label": "Main entrypoint: reads config from environment and runs the pipeline.      Requi",
+      "label": "Main entrypoint: reads config from environment and runs one pipeline     per con",
       "file_type": "rationale",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L195",
+      "source_location": "L245",
       "_origin": "ast",
-      "id": "scrape_werse_pipeline_orchestrator_rationale_195",
+      "id": "scrape_werse_pipeline_orchestrator_rationale_245",
       "community": 4,
-      "norm_label": "main entrypoint: reads config from environment and runs the pipeline.      requi"
+      "norm_label": "main entrypoint: reads config from environment and runs one pipeline     per con"
     },
     {
       "label": "# TODO: Hook in alerting (email/Slack/PagerDuty) here",
       "file_type": "rationale",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L170",
+      "source_location": "L220",
       "_origin": "ast",
-      "id": "scrape_werse_pipeline_orchestrator_rationale_170",
+      "id": "scrape_werse_pipeline_orchestrator_rationale_220",
       "community": 4,
       "norm_label": "# todo: hook in alerting (email/slack/pagerduty) here"
     },
@@ -153,7 +223,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_trigger_scraper",
-      "community": 0,
+      "community": 5,
       "norm_label": ".trigger_scraper()"
     },
     {
@@ -163,24 +233,24 @@
       "source_location": "",
       "_origin": "ast",
       "id": "scrape_werse_scraper_client_brightdata_client_py_any",
-      "community": 0,
+      "community": 5,
       "norm_label": "any"
     },
     {
       "label": ".get_dataset()",
       "file_type": "code",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L89",
+      "source_location": "L93",
       "_origin": "ast",
       "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
-      "community": 0,
+      "community": 5,
       "norm_label": ".get_dataset()"
     },
     {
       "label": ".initiate_self_heal()",
       "file_type": "code",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L114",
+      "source_location": "L143",
       "_origin": "ast",
       "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_initiate_self_heal",
       "community": 0,
@@ -190,7 +260,7 @@
       "label": ".auto_approve_heal()",
       "file_type": "code",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L144",
+      "source_location": "L173",
       "_origin": "ast",
       "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient_auto_approve_heal",
       "community": 0,
@@ -200,7 +270,7 @@
       "label": "create_client_from_env()",
       "file_type": "code",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L228",
+      "source_location": "L257",
       "_origin": "ast",
       "id": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
       "community": 0,
@@ -233,26 +303,26 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "scrape_werse_scraper_client_brightdata_client_rationale_53",
-      "community": 0,
+      "community": 5,
       "norm_label": "trigger an extraction run via post /dca/trigger.          args:             coll"
     },
     {
-      "label": "Fetch the extracted JSON results for a completed run.          Args:",
+      "label": "Fetch the extracted JSON results for a completed run, polling until ready.",
       "file_type": "rationale",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L90",
+      "source_location": "L96",
       "_origin": "ast",
-      "id": "scrape_werse_scraper_client_brightdata_client_rationale_90",
-      "community": 0,
-      "norm_label": "fetch the extracted json results for a completed run.          args:"
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_96",
+      "community": 5,
+      "norm_label": "fetch the extracted json results for a completed run, polling until ready."
     },
     {
       "label": "Trigger the Cloud AI self-heal loop to repair broken selectors.          This ca",
       "file_type": "rationale",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L115",
+      "source_location": "L144",
       "_origin": "ast",
-      "id": "scrape_werse_scraper_client_brightdata_client_rationale_115",
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_144",
       "community": 0,
       "norm_label": "trigger the cloud ai self-heal loop to repair broken selectors.          this ca"
     },
@@ -260,9 +330,9 @@
       "label": "Poll the healing job and programmatically accept the AI-proposed diff.",
       "file_type": "rationale",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L150",
+      "source_location": "L179",
       "_origin": "ast",
-      "id": "scrape_werse_scraper_client_brightdata_client_rationale_150",
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_179",
       "community": 0,
       "norm_label": "poll the healing job and programmatically accept the ai-proposed diff."
     },
@@ -270,9 +340,9 @@
       "label": "Convenience factory that reads BRIGHTDATA_API_KEY from the environment.      Rai",
       "file_type": "rationale",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L229",
+      "source_location": "L258",
       "_origin": "ast",
-      "id": "scrape_werse_scraper_client_brightdata_client_rationale_229",
+      "id": "scrape_werse_scraper_client_brightdata_client_rationale_258",
       "community": 0,
       "norm_label": "convenience factory that reads brightdata_api_key from the environment.      rai"
     },
@@ -293,7 +363,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scrape_werse_scraper_sync_firebase_sync",
-      "community": 5,
+      "community": 1,
       "norm_label": "firebase_sync.py"
     },
     {
@@ -373,7 +443,7 @@
       "source_location": "L200",
       "_origin": "ast",
       "id": "scrape_werse_scraper_sync_firebase_sync_create_client_from_env",
-      "community": 5,
+      "community": 1,
       "norm_label": "create_client_from_env()"
     },
     {
@@ -383,7 +453,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scrape_werse_scraper_sync_firebase_sync_rationale_1",
-      "community": 5,
+      "community": 1,
       "norm_label": "firebase firestore rest client \u2014 service layer ================================="
     },
     {
@@ -443,7 +513,7 @@
       "source_location": "L201",
       "_origin": "ast",
       "id": "scrape_werse_scraper_sync_firebase_sync_rationale_201",
-      "community": 5,
+      "community": 1,
       "norm_label": "convenience factory that reads firebase config from the environment.      raises"
     },
     {
@@ -473,7 +543,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models",
-      "community": 2,
+      "community": 3,
       "norm_label": "models.py"
     },
     {
@@ -483,7 +553,7 @@
       "source_location": "L20",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_opportunitytype",
-      "community": 2,
+      "community": 3,
       "norm_label": "opportunitytype"
     },
     {
@@ -493,7 +563,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "str",
-      "community": 2,
+      "community": 3,
       "norm_label": "str"
     },
     {
@@ -503,7 +573,7 @@
       "source_location": "",
       "_origin": "ast",
       "id": "enum",
-      "community": 2,
+      "community": 3,
       "norm_label": "enum"
     },
     {
@@ -513,7 +583,7 @@
       "source_location": "L31",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_difficultylevel",
-      "community": 2,
+      "community": 3,
       "norm_label": "difficultylevel"
     },
     {
@@ -523,7 +593,7 @@
       "source_location": "L39",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_locationtype",
-      "community": 2,
+      "community": 3,
       "norm_label": "locationtype"
     },
     {
@@ -533,7 +603,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_opportunity",
-      "community": 3,
+      "community": 2,
       "norm_label": "opportunity"
     },
     {
@@ -543,18 +613,28 @@
       "source_location": "",
       "_origin": "ast",
       "id": "basemodel",
-      "community": 3,
+      "community": 2,
       "norm_label": "basemodel"
     },
     {
-      "label": ".validate_future_deadline()",
+      "label": ".coerce_prizes_total()",
       "file_type": "code",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L115",
+      "source_location": "L119",
       "_origin": "ast",
-      "id": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
-      "community": 3,
-      "norm_label": ".validate_future_deadline()"
+      "id": "scrape_werse_shared_models_models_opportunity_coerce_prizes_total",
+      "community": 2,
+      "norm_label": ".coerce_prizes_total()"
+    },
+    {
+      "label": ".parse_flexible_deadline()",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L148",
+      "_origin": "ast",
+      "id": "scrape_werse_shared_models_models_opportunity_parse_flexible_deadline",
+      "community": 2,
+      "norm_label": ".parse_flexible_deadline()"
     },
     {
       "label": "datetime",
@@ -563,18 +643,38 @@
       "source_location": "",
       "_origin": "ast",
       "id": "datetime",
-      "community": 3,
+      "community": 2,
       "norm_label": "datetime"
     },
     {
       "label": ".coerce_url_string()",
       "file_type": "code",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L130",
+      "source_location": "L224",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_opportunity_coerce_url_string",
-      "community": 3,
+      "community": 2,
       "norm_label": ".coerce_url_string()"
+    },
+    {
+      "label": ".normalize_opportunity_type()",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L232",
+      "_origin": "ast",
+      "id": "scrape_werse_shared_models_models_opportunity_normalize_opportunity_type",
+      "community": 2,
+      "norm_label": ".normalize_opportunity_type()"
+    },
+    {
+      "label": ".normalize_is_active()",
+      "file_type": "code",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L251",
+      "_origin": "ast",
+      "id": "scrape_werse_shared_models_models_opportunity_normalize_is_active",
+      "community": 2,
+      "norm_label": ".normalize_is_active()"
     },
     {
       "label": "Domain Models \u2014 Layer 0 (Foundation) ===================================== Pydan",
@@ -583,7 +683,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_rationale_1",
-      "community": 2,
+      "community": 3,
       "norm_label": "domain models \u2014 layer 0 (foundation) ===================================== pydan"
     },
     {
@@ -593,7 +693,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_rationale_21",
-      "community": 2,
+      "community": 3,
       "norm_label": "classification of the ai opportunity."
     },
     {
@@ -603,7 +703,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_rationale_32",
-      "community": 2,
+      "community": 3,
       "norm_label": "skill level required for the opportunity."
     },
     {
@@ -613,7 +713,7 @@
       "source_location": "L40",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_rationale_40",
-      "community": 2,
+      "community": 3,
       "norm_label": "modality of the opportunity."
     },
     {
@@ -623,36 +723,294 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "scrape_werse_shared_models_models_rationale_51",
-      "community": 3,
+      "community": 2,
       "norm_label": "core domain schema representing a single ai opportunity.      this model is the"
     },
     {
-      "label": "Soft-validates that the deadline is in the future.         Expired deadlines are",
+      "label": "Coerces prize value from various scraper formats:         - dict: {\"value\": 7400",
       "file_type": "rationale",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L116",
+      "source_location": "L120",
       "_origin": "ast",
-      "id": "scrape_werse_shared_models_models_rationale_116",
-      "community": 3,
-      "norm_label": "soft-validates that the deadline is in the future.         expired deadlines are"
+      "id": "scrape_werse_shared_models_models_rationale_120",
+      "community": 2,
+      "norm_label": "coerces prize value from various scraper formats:         - dict: {\"value\": 7400"
+    },
+    {
+      "label": "Parses deadlines from various scraper formats:         - ISO datetime string: '2",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L149",
+      "_origin": "ast",
+      "id": "scrape_werse_shared_models_models_rationale_149",
+      "community": 2,
+      "norm_label": "parses deadlines from various scraper formats:         - iso datetime string: '2"
     },
     {
       "label": "Accept plain strings alongside HttpUrl objects.",
       "file_type": "rationale",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L131",
+      "source_location": "L225",
       "_origin": "ast",
-      "id": "scrape_werse_shared_models_models_rationale_131",
-      "community": 3,
+      "id": "scrape_werse_shared_models_models_rationale_225",
+      "community": 2,
       "norm_label": "accept plain strings alongside httpurl objects."
+    },
+    {
+      "label": "Maps raw scraper strings (e.g. 'hackathon', 'competition') to the         Opport",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L233",
+      "_origin": "ast",
+      "id": "scrape_werse_shared_models_models_rationale_233",
+      "community": 2,
+      "norm_label": "maps raw scraper strings (e.g. 'hackathon', 'competition') to the         opport"
+    },
+    {
+      "label": "Converts scraper status strings ('active', 'upcoming', 'closed') to bool.",
+      "file_type": "rationale",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L252",
+      "_origin": "ast",
+      "id": "scrape_werse_shared_models_models_rationale_252",
+      "community": 2,
+      "norm_label": "converts scraper status strings ('active', 'upcoming', 'closed') to bool."
     }
   ],
   "links": [
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "dry_run",
+      "target": "dry_run_dry_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "dry_run",
+      "target": "scrape_werse_pipeline_orchestrator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "dry_run",
+      "target": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "dry_run",
+      "target": "scrape_werse_scraper_client_brightdata_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "dry_run",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "dry_run",
+      "target": "scrape_werse_shared_models_models",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "dry_run",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "dry_run_rationale_1",
+      "target": "dry_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "dry_run_dry_run",
+      "target": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "dry_run_dry_run",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "dry_run.py",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "dry_run_dry_run",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "inspect_datasets",
+      "target": "inspect_datasets_inspect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "inspect_datasets",
+      "target": "scrape_werse_pipeline_orchestrator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "inspect_datasets",
+      "target": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "inspect_datasets",
+      "target": "scrape_werse_scraper_client_brightdata_client",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "inspect_datasets",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "inspect_datasets",
+      "target": "scrape_werse_shared_models_models",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "inspect_datasets",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "inspect_datasets_inspect",
+      "target": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "inspect_datasets_inspect",
+      "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "inspect_datasets.py",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "inspect_datasets_inspect",
+      "target": "scrape_werse_shared_models_models_opportunity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L194",
+      "source_location": "L244",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator",
       "target": "scrape_werse_pipeline_orchestrator_main",
@@ -663,6 +1021,16 @@
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
       "source_location": "L62",
+      "weight": 1.0,
+      "source": "scrape_werse_pipeline_orchestrator",
+      "target": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L106",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator",
       "target": "scrape_werse_pipeline_orchestrator_run_pipeline",
@@ -748,10 +1116,20 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L170",
+      "source_location": "L220",
       "weight": 1.0,
-      "source": "scrape_werse_pipeline_orchestrator_rationale_170",
+      "source": "scrape_werse_pipeline_orchestrator_rationale_220",
       "target": "scrape_werse_pipeline_orchestrator",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L63",
+      "weight": 1.0,
+      "source": "scrape_werse_pipeline_orchestrator_rationale_63",
+      "target": "scrape_werse_pipeline_orchestrator_normalize_row",
       "confidence_score": 1.0
     },
     {
@@ -759,7 +1137,18 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L237",
+      "source_location": "L145",
+      "weight": 1.0,
+      "source": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "target": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/pipeline_orchestrator.py",
+      "source_location": "L302",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator_main",
       "target": "scrape_werse_pipeline_orchestrator_run_pipeline",
@@ -769,9 +1158,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L68",
+      "source_location": "L112",
       "weight": 1.0,
-      "source": "scrape_werse_pipeline_orchestrator_rationale_68",
+      "source": "scrape_werse_pipeline_orchestrator_rationale_112",
       "target": "scrape_werse_pipeline_orchestrator_run_pipeline",
       "confidence_score": 1.0
     },
@@ -780,7 +1169,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L62",
+      "source_location": "L106",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator_run_pipeline",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
@@ -791,7 +1180,7 @@
       "context": "parameter_type",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L62",
+      "source_location": "L106",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator_run_pipeline",
       "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
@@ -802,7 +1191,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L107",
+      "source_location": "L157",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator_run_pipeline",
       "target": "scrape_werse_shared_models_models_opportunity",
@@ -813,7 +1202,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L230",
+      "source_location": "L292",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator_main",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
@@ -824,7 +1213,7 @@
       "context": "call",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L231",
+      "source_location": "L293",
       "weight": 1.0,
       "source": "scrape_werse_pipeline_orchestrator_main",
       "target": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
@@ -834,9 +1223,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/pipeline_orchestrator.py",
-      "source_location": "L195",
+      "source_location": "L245",
       "weight": 1.0,
-      "source": "scrape_werse_pipeline_orchestrator_rationale_195",
+      "source": "scrape_werse_pipeline_orchestrator_rationale_245",
       "target": "scrape_werse_pipeline_orchestrator_main",
       "confidence_score": 1.0
     },
@@ -854,7 +1243,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L228",
+      "source_location": "L257",
       "weight": 1.0,
       "source": "scrape_werse_scraper_client_brightdata_client",
       "target": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
@@ -874,7 +1263,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L144",
+      "source_location": "L173",
       "weight": 1.0,
       "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_auto_approve_heal",
@@ -884,7 +1273,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L89",
+      "source_location": "L93",
       "weight": 1.0,
       "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
@@ -904,7 +1293,7 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L114",
+      "source_location": "L143",
       "weight": 1.0,
       "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_initiate_self_heal",
@@ -925,7 +1314,7 @@
       "context": "return_type",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L228",
+      "source_location": "L257",
       "weight": 1.0,
       "source": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
@@ -967,7 +1356,7 @@
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L89",
+      "source_location": "L93",
       "weight": 1.0,
       "source": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
       "target": "scrape_werse_scraper_client_brightdata_client_py_any",
@@ -977,9 +1366,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L90",
+      "source_location": "L96",
       "weight": 1.0,
-      "source": "scrape_werse_scraper_client_brightdata_client_rationale_90",
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_96",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
       "confidence_score": 1.0
     },
@@ -987,9 +1376,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L115",
+      "source_location": "L144",
       "weight": 1.0,
-      "source": "scrape_werse_scraper_client_brightdata_client_rationale_115",
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_144",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_initiate_self_heal",
       "confidence_score": 1.0
     },
@@ -997,9 +1386,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L150",
+      "source_location": "L179",
       "weight": 1.0,
-      "source": "scrape_werse_scraper_client_brightdata_client_rationale_150",
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_179",
       "target": "scrape_werse_scraper_client_brightdata_client_brightdataclient_auto_approve_heal",
       "confidence_score": 1.0
     },
@@ -1007,9 +1396,9 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/scraper/client/brightdata_client.py",
-      "source_location": "L229",
+      "source_location": "L258",
       "weight": 1.0,
-      "source": "scrape_werse_scraper_client_brightdata_client_rationale_229",
+      "source": "scrape_werse_scraper_client_brightdata_client_rationale_258",
       "target": "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
       "confidence_score": 1.0
     },
@@ -1406,7 +1795,17 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L130",
+      "source_location": "L119",
+      "weight": 1.0,
+      "source": "scrape_werse_shared_models_models_opportunity",
+      "target": "scrape_werse_shared_models_models_opportunity_coerce_prizes_total",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L224",
       "weight": 1.0,
       "source": "scrape_werse_shared_models_models_opportunity",
       "target": "scrape_werse_shared_models_models_opportunity_coerce_url_string",
@@ -1416,10 +1815,30 @@
       "relation": "method",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L115",
+      "source_location": "L251",
       "weight": 1.0,
       "source": "scrape_werse_shared_models_models_opportunity",
-      "target": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "target": "scrape_werse_shared_models_models_opportunity_normalize_is_active",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L232",
+      "weight": 1.0,
+      "source": "scrape_werse_shared_models_models_opportunity",
+      "target": "scrape_werse_shared_models_models_opportunity_normalize_opportunity_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "method",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "scrape_werse_shared_models_models_opportunity",
+      "target": "scrape_werse_shared_models_models_opportunity_parse_flexible_deadline",
       "confidence_score": 1.0
     },
     {
@@ -1433,13 +1852,23 @@
       "confidence_score": 1.0
     },
     {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L120",
+      "weight": 1.0,
+      "source": "scrape_werse_shared_models_models_rationale_120",
+      "target": "scrape_werse_shared_models_models_opportunity_coerce_prizes_total",
+      "confidence_score": 1.0
+    },
+    {
       "relation": "references",
       "context": "generic_arg",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L115",
+      "source_location": "L148",
       "weight": 1.0,
-      "source": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "source": "scrape_werse_shared_models_models_opportunity_parse_flexible_deadline",
       "target": "datetime",
       "confidence_score": 1.0
     },
@@ -1447,22 +1876,43 @@
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L116",
+      "source_location": "L149",
       "weight": 1.0,
-      "source": "scrape_werse_shared_models_models_rationale_116",
-      "target": "scrape_werse_shared_models_models_opportunity_validate_future_deadline",
+      "source": "scrape_werse_shared_models_models_rationale_149",
+      "target": "scrape_werse_shared_models_models_opportunity_parse_flexible_deadline",
       "confidence_score": 1.0
     },
     {
       "relation": "rationale_for",
       "confidence": "EXTRACTED",
       "source_file": "scrape_werse/shared/models/models.py",
-      "source_location": "L131",
+      "source_location": "L225",
       "weight": 1.0,
-      "source": "scrape_werse_shared_models_models_rationale_131",
+      "source": "scrape_werse_shared_models_models_rationale_225",
       "target": "scrape_werse_shared_models_models_opportunity_coerce_url_string",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L233",
+      "weight": 1.0,
+      "source": "scrape_werse_shared_models_models_rationale_233",
+      "target": "scrape_werse_shared_models_models_opportunity_normalize_opportunity_type",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "rationale_for",
+      "confidence": "EXTRACTED",
+      "source_file": "scrape_werse/shared/models/models.py",
+      "source_location": "L252",
+      "weight": 1.0,
+      "source": "scrape_werse_shared_models_models_rationale_252",
+      "target": "scrape_werse_shared_models_models_opportunity_normalize_is_active",
       "confidence_score": 1.0
     }
   ],
-  "hyperedges": []
+  "hyperedges": [],
+  "built_at_commit": "d3eff51441767d18037692b3fdd88eae37ece6bd"
 }

@@ -1,0 +1,258 @@
+{
+  "communities": {
+    "0": [
+      "dry_run",
+      "dry_run_dry_run",
+      "dry_run_rationale_1",
+      "inspect_datasets",
+      "inspect_datasets_inspect",
+      "scrape_werse_pipeline_orchestrator_normalize_row",
+      "scrape_werse_pipeline_orchestrator_rationale_63",
+      "scrape_werse_scraper_client_brightdata_client",
+      "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "scrape_werse_scraper_client_brightdata_client_brightdataclient_auto_approve_heal",
+      "scrape_werse_scraper_client_brightdata_client_brightdataclient_init",
+      "scrape_werse_scraper_client_brightdata_client_brightdataclient_initiate_self_heal",
+      "scrape_werse_scraper_client_brightdata_client_create_client_from_env",
+      "scrape_werse_scraper_client_brightdata_client_rationale_1",
+      "scrape_werse_scraper_client_brightdata_client_rationale_144",
+      "scrape_werse_scraper_client_brightdata_client_rationale_179",
+      "scrape_werse_scraper_client_brightdata_client_rationale_258",
+      "scrape_werse_scraper_client_brightdata_client_rationale_26"
+    ],
+    "1": [
+      "scrape_werse_scraper_sync_firebase_sync",
+      "scrape_werse_scraper_sync_firebase_sync_create_client_from_env",
+      "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_batch_upsert",
+      "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_convert_to_firestore_fields",
+      "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_generate_doc_id",
+      "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_init",
+      "scrape_werse_scraper_sync_firebase_sync_firestorerestclient_upsert_opportunity",
+      "scrape_werse_scraper_sync_firebase_sync_py_any",
+      "scrape_werse_scraper_sync_firebase_sync_rationale_1",
+      "scrape_werse_scraper_sync_firebase_sync_rationale_130",
+      "scrape_werse_scraper_sync_firebase_sync_rationale_174",
+      "scrape_werse_scraper_sync_firebase_sync_rationale_201",
+      "scrape_werse_scraper_sync_firebase_sync_rationale_34",
+      "scrape_werse_scraper_sync_firebase_sync_rationale_63",
+      "scrape_werse_scraper_sync_firebase_sync_rationale_84"
+    ],
+    "2": [
+      "basemodel",
+      "datetime",
+      "scrape_werse_shared_models_models_opportunity",
+      "scrape_werse_shared_models_models_opportunity_coerce_prizes_total",
+      "scrape_werse_shared_models_models_opportunity_coerce_url_string",
+      "scrape_werse_shared_models_models_opportunity_normalize_is_active",
+      "scrape_werse_shared_models_models_opportunity_normalize_opportunity_type",
+      "scrape_werse_shared_models_models_opportunity_parse_flexible_deadline",
+      "scrape_werse_shared_models_models_rationale_120",
+      "scrape_werse_shared_models_models_rationale_149",
+      "scrape_werse_shared_models_models_rationale_225",
+      "scrape_werse_shared_models_models_rationale_233",
+      "scrape_werse_shared_models_models_rationale_252",
+      "scrape_werse_shared_models_models_rationale_51"
+    ],
+    "3": [
+      "enum",
+      "scrape_werse_shared_models_models",
+      "scrape_werse_shared_models_models_difficultylevel",
+      "scrape_werse_shared_models_models_locationtype",
+      "scrape_werse_shared_models_models_opportunitytype",
+      "scrape_werse_shared_models_models_rationale_1",
+      "scrape_werse_shared_models_models_rationale_21",
+      "scrape_werse_shared_models_models_rationale_32",
+      "scrape_werse_shared_models_models_rationale_40",
+      "str"
+    ],
+    "4": [
+      "scrape_werse_pipeline_orchestrator",
+      "scrape_werse_pipeline_orchestrator_main",
+      "scrape_werse_pipeline_orchestrator_rationale_1",
+      "scrape_werse_pipeline_orchestrator_rationale_112",
+      "scrape_werse_pipeline_orchestrator_rationale_220",
+      "scrape_werse_pipeline_orchestrator_rationale_245",
+      "scrape_werse_pipeline_orchestrator_run_pipeline"
+    ],
+    "5": [
+      "scrape_werse_scraper_client_brightdata_client_brightdataclient_get_dataset",
+      "scrape_werse_scraper_client_brightdata_client_brightdataclient_trigger_scraper",
+      "scrape_werse_scraper_client_brightdata_client_py_any",
+      "scrape_werse_scraper_client_brightdata_client_rationale_53",
+      "scrape_werse_scraper_client_brightdata_client_rationale_96"
+    ],
+    "6": [
+      "pkg_scrape_werse"
+    ],
+    "7": [
+      "scrape_werse_init"
+    ],
+    "8": [
+      "scrape_werse_scraper_client_init"
+    ],
+    "9": [
+      "scrape_werse_scraper_init"
+    ],
+    "10": [
+      "scrape_werse_scraper_sync_init"
+    ],
+    "11": [
+      "scrape_werse_shared_init"
+    ],
+    "12": [
+      "scrape_werse_shared_models_init"
+    ]
+  },
+  "cohesion": {
+    "0": 0.16339869281045752,
+    "1": 0.175,
+    "2": 0.14285714285714285,
+    "3": 0.3111111111111111,
+    "4": 0.3333333333333333,
+    "5": 0.4,
+    "6": 1.0,
+    "7": 1.0,
+    "8": 1.0,
+    "9": 1.0,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0
+  },
+  "gods": [
+    {
+      "id": "scrape_werse_scraper_client_brightdata_client_brightdataclient",
+      "label": "BrightDataClient",
+      "degree": 15
+    },
+    {
+      "id": "scrape_werse_shared_models_models_opportunity",
+      "label": "Opportunity",
+      "degree": 14
+    },
+    {
+      "id": "scrape_werse_scraper_sync_firebase_sync_firestorerestclient",
+      "label": "FirestoreRESTClient",
+      "degree": 11
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_normalize_row",
+      "label": "normalize_row()",
+      "degree": 7
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_run_pipeline",
+      "label": "run_pipeline()",
+      "degree": 7
+    },
+    {
+      "id": "scrape_werse_pipeline_orchestrator_main",
+      "label": "main()",
+      "degree": 5
+    },
+    {
+      "id": "dry_run_dry_run",
+      "label": "dry_run()",
+      "degree": 4
+    },
+    {
+      "id": "inspect_datasets_inspect",
+      "label": "inspect()",
+      "degree": 4
+    },
+    {
+      "id": "scrape_werse_shared_models_models_opportunitytype",
+      "label": "OpportunityType",
+      "degree": 4
+    },
+    {
+      "id": "scrape_werse_shared_models_models_difficultylevel",
+      "label": "DifficultyLevel",
+      "degree": 4
+    }
+  ],
+  "surprises": [
+    {
+      "source": "dry_run()",
+      "target": "Opportunity",
+      "source_files": [
+        "dry_run.py",
+        "scrape_werse/shared/models/models.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "inspect()",
+      "target": "Opportunity",
+      "source_files": [
+        "inspect_datasets.py",
+        "scrape_werse/shared/models/models.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "dry_run()",
+      "target": "normalize_row()",
+      "source_files": [
+        "dry_run.py",
+        "scrape_werse/pipeline_orchestrator.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    },
+    {
+      "source": "dry_run()",
+      "target": "BrightDataClient",
+      "source_files": [
+        "dry_run.py",
+        "scrape_werse/scraper/client/brightdata_client.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    },
+    {
+      "source": "inspect()",
+      "target": "normalize_row()",
+      "source_files": [
+        "inspect_datasets.py",
+        "scrape_werse/pipeline_orchestrator.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "connects across different repos/directories"
+    }
+  ],
+  "questions": [
+    {
+      "type": "bridge_node",
+      "question": "Why does `BrightDataClient` connect `Community 0` to `Community 4`, `Community 5`?",
+      "why": "High betweenness centrality (0.275) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `Opportunity` connect `Community 2` to `Community 0`, `Community 3`, `Community 4`?",
+      "why": "High betweenness centrality (0.270) - this node is a cross-community bridge."
+    },
+    {
+      "type": "bridge_node",
+      "question": "Why does `FirestoreRESTClient` connect `Community 1` to `Community 4`?",
+      "why": "High betweenness centrality (0.258) - this node is a cross-community bridge."
+    },
+    {
+      "type": "isolated_nodes",
+      "question": "What connects `Dry-run validation script. Scrapes all 4 sources, validates data through the Pyd`, `scrape-werse`, `Pipeline Orchestrator — CLI / Orchestration Layer (Top-Level) ==================` to the rest of the system?",
+      "why": "31 weakly-connected nodes found - possible documentation gaps or missing edges."
+    },
+    {
+      "type": "low_cohesion",
+      "question": "Should `Community 2` be split into smaller, more focused modules?",
+      "why": "Cohesion score 0.14285714285714285 - nodes in this community are weakly interconnected."
+    }
+  ]
+}

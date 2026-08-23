@@ -64,10 +64,9 @@ class BrightDataClient:
             ValueError: If the API returns a non-200 status.
         """
         endpoint = f"{self.BASE_URL}/dca/trigger"
-        payload = {
-            "collector": collector_id,
-            "inputs": [{"url": url} for url in urls],
-        }
+        # collector_id is passed as a query parameter; inputs go in the body.
+        params = {"collector": collector_id}
+        payload = [{"url": url} for url in urls]
 
         logger.info(
             f"Triggering collector '{collector_id}' for {len(urls)} URL(s)..."
@@ -75,7 +74,7 @@ class BrightDataClient:
 
         async with httpx.AsyncClient(timeout=30.0) as client:
             response = await client.post(
-                endpoint, headers=self.headers, json=payload
+                endpoint, headers=self.headers, params=params, json=payload
             )
             if response.status_code != 200:
                 raise ValueError(
@@ -83,31 +82,61 @@ class BrightDataClient:
                     f"{response.text}"
                 )
             data = response.json()
+            # The newer Scraper Studio API returns 'collection_id';
+            # normalise to 'id' for backward compatibility.
+            if "collection_id" in data and "id" not in data:
+                data["id"] = data["collection_id"]
             logger.info(f"Scraper triggered. Response ID: {data.get('id')}")
             return data
 
-    async def get_dataset(self, response_id: str) -> List[Dict[str, Any]]:
+
+    async def get_dataset(
+        self, response_id: str, poll_timeout: int = 300, poll_interval: float = 5.0
+    ) -> List[Dict[str, Any]]:
         """
-        Fetch the extracted JSON results for a completed run.
+        Fetch the extracted JSON results for a completed run, polling until ready.
 
         Args:
-            response_id: The `id` returned by `trigger_scraper`.
+            response_id: The `id` / `collection_id` returned by `trigger_scraper`.
+            poll_timeout: Max seconds to wait for results (default 300s).
+            poll_interval: Seconds between status checks (default 5s).
 
         Returns:
             List of raw row dicts extracted by the scraper.
 
         Raises:
+            TimeoutError: If results are not ready within poll_timeout seconds.
             httpx.HTTPStatusError: On non-2xx responses.
         """
-        endpoint = f"{self.BASE_URL}/dca/dataset?id={response_id}"
+        import time
+        endpoint = f"{self.BASE_URL}/dca/dataset"
+        params = {"id": response_id}
         logger.info(f"Fetching dataset for response ID: {response_id}")
 
+        deadline = time.monotonic() + poll_timeout
+        attempt = 0
         async with httpx.AsyncClient(timeout=60.0) as client:
-            response = await client.get(endpoint, headers=self.headers)
-            response.raise_for_status()
-            rows: List[Dict[str, Any]] = response.json()
-            logger.info(f"Fetched {len(rows)} raw row(s) from dataset.")
-            return rows
+            while time.monotonic() < deadline:
+                attempt += 1
+                response = await client.get(endpoint, headers=self.headers, params=params)
+                # 200 with JSON array = ready; 202 = still processing
+                if response.status_code == 200:
+                    rows: List[Dict[str, Any]] = response.json()
+                    logger.info(f"Fetched {len(rows)} raw row(s) from dataset.")
+                    return rows
+                elif response.status_code == 202:
+                    logger.info(
+                        f"Dataset not ready yet (attempt {attempt}), "
+                        f"retrying in {poll_interval}s..."
+                    )
+                    await asyncio.sleep(poll_interval)
+                else:
+                    response.raise_for_status()
+
+        raise TimeoutError(
+            f"Dataset for response_id '{response_id}' not ready "
+            f"after {poll_timeout}s."
+        )
 
     # ── Self-Healing Operations ───────────────────────────────────────────────
 

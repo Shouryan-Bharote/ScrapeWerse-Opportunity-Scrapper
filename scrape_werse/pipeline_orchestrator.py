@@ -48,12 +48,56 @@ logger = logging.getLogger("Pipeline")
 # These are the seed pages from which the scraper extracts AI opportunities.
 # Add or remove URLs as the project grows.
 
-DEFAULT_TARGET_URLS: list[str] = [
-    "https://devpost.com/hackathons?challenge_type=online&order_by=deadline",
-    "https://unstop.com/hackathons",
-    "https://www.kaggle.com/competitions",
-    "https://hack2skill.com/hackathon",
-]
+DEFAULT_TARGET_URLS: dict[str, str] = {
+    "devpost": "https://devpost.com/hackathons?challenge_type=online&order_by=deadline",
+    "unstop_hackathon": "https://unstop.com/hackathons?oppstatus=open",
+    "unstop_competition": "https://unstop.com/competitions?oppstatus=open",
+    "hack2skill": "https://hack2skill.com/hackathon",
+}
+
+
+# ── Row Normalization ─────────────────────────────────────────────────────────
+
+
+def normalize_row(raw: dict) -> dict | None:
+    """
+    Normalize a raw scraper output row into a flat dict that matches the
+    Opportunity Pydantic schema.
+
+    Handles multiple scraper response shapes:
+      1. Flat: {"title": ..., "source": ..., ...}
+      2. Nested cards: {"hackathon_cards": [...]}, {"competitions": [...]}, {"events": [...]}
+      3. Product page / link-only rows (ignored)
+
+    Also maps scraper-specific field aliases to model field names:
+      - eventtype  → opportunity_type
+      - status     → is_active
+      - total_prize_value → prizes_total
+    """
+    # Check for known nested array keys
+    for array_key in ("hackathon_cards", "competitions", "event_cards", "cards", "events"):
+        if array_key in raw and raw[array_key] and isinstance(raw[array_key], list):
+            record = raw[array_key][0].copy()
+            break
+    else:
+        if "title" in raw and raw.get("title"):
+            record = raw.copy()
+        else:
+            return None
+
+    # Map scraper field aliases → Opportunity field names
+    alias_map = {
+        "eventtype": "opportunity_type",
+        "event_type": "opportunity_type",
+        "status": "is_active",
+        "total_prize_value": "prizes_total",
+    }
+    for scraper_key, model_key in alias_map.items():
+        if scraper_key in record and model_key not in record:
+            record[model_key] = record.pop(scraper_key)
+
+    return record
+
 
 
 # ── Core Pipeline ─────────────────────────────────────────────────────────────
@@ -97,14 +141,20 @@ async def run_pipeline(
 
     for row in raw_dataset:
         try:
+            # Normalize the raw row (unwrap nested structure, remap aliases)
+            normalized = normalize_row(row)
+            if normalized is None:
+                logger.debug("Skipping empty/link-only row.")
+                continue
+
             # Essential field guard — catches nulls BEFORE Pydantic sees them
-            if not row.get("title") or not row.get("organizer"):
+            if not normalized.get("title") or not normalized.get("organizer"):
                 raise ValueError(
                     f"Essential fields 'title' or 'organizer' returned "
-                    f"empty or null. Row keys: {list(row.keys())}"
+                    f"empty or null. Row keys: {list(normalized.keys())}"
                 )
 
-            validated = Opportunity(**row)
+            validated = Opportunity(**normalized)
             valid_records.append(validated.model_dump(mode="json"))
 
         except Exception as exc:
@@ -193,11 +243,15 @@ async def run_pipeline(
 
 async def main() -> None:
     """
-    Main entrypoint: reads config from environment and runs the pipeline.
+    Main entrypoint: reads config from environment and runs one pipeline
+    per configured source (Devpost, Unstop, Hack2Skill).
 
     Required env vars (set in .env):
       - BRIGHTDATA_API_KEY
-      - BRIGHTDATA_COLLECTOR_ID
+      - BRIGHTDATA_DEVPOST_COLLECTOR_ID
+      - BRIGHTDATA_UNSTOP_HACKATHON_COLLECTOR_ID
+      - BRIGHTDATA_UNSTOP_COMPETITION_COLLECTOR_ID
+      - BRIGHTDATA_HACK2SKILL_COLLECTOR_ID
       - FIREBASE_PROJECT_ID
 
     Optional env vars:
@@ -208,16 +262,24 @@ async def main() -> None:
     """
     # ── Environment Validation ────────────────────────────────────────────────
     bd_key = os.getenv("BRIGHTDATA_API_KEY")
-    collector_id = os.getenv("BRIGHTDATA_COLLECTOR_ID")
     fb_project = os.getenv("FIREBASE_PROJECT_ID")
+
+    # Per-source collector IDs
+    collector_ids: dict[str, str | None] = {
+        "devpost": os.getenv("BRIGHTDATA_DEVPOST_COLLECTOR_ID"),
+        "unstop_hackathon": os.getenv("BRIGHTDATA_UNSTOP_HACKATHON_COLLECTOR_ID"),
+        "unstop_competition": os.getenv("BRIGHTDATA_UNSTOP_COMPETITION_COLLECTOR_ID"),
+        "hack2skill": os.getenv("BRIGHTDATA_HACK2SKILL_COLLECTOR_ID"),
+    }
 
     missing: list[str] = []
     if not bd_key:
         missing.append("BRIGHTDATA_API_KEY")
-    if not collector_id:
-        missing.append("BRIGHTDATA_COLLECTOR_ID")
     if not fb_project:
         missing.append("FIREBASE_PROJECT_ID")
+    for source, cid in collector_ids.items():
+        if not cid:
+            missing.append(f"BRIGHTDATA_{source.upper()}_COLLECTOR_ID")
 
     if missing:
         logger.error(
@@ -233,13 +295,16 @@ async def main() -> None:
         api_key=os.getenv("FIREBASE_API_KEY"),
     )
 
-    # ── Run Pipeline ──────────────────────────────────────────────────────────
-    await run_pipeline(
-        urls=DEFAULT_TARGET_URLS,
-        collector_id=collector_id,  # type: ignore[arg-type]
-        bd_client=bd_client,
-        db_client=db_client,
-    )
+    # ── Run one pipeline per source sequentially ──────────────────────────────
+    for source, collector_id in collector_ids.items():
+        url = DEFAULT_TARGET_URLS[source]
+        logger.info(f"\n{'='*60}\n  Source: {source.upper()}\n{'='*60}")
+        await run_pipeline(
+            urls=[url],
+            collector_id=collector_id,  # type: ignore[arg-type]
+            bd_client=bd_client,
+            db_client=db_client,
+        )
 
 
 if __name__ == "__main__":

@@ -67,6 +67,10 @@ class Opportunity(BaseModel):
         ...,
         description="The direct, canonical URL to the opportunity page.",
     )
+    source: str = Field(
+        ...,
+        description="The platform where this was found (e.g., 'unstop', 'devpost', 'hack2skill').",
+    )
     organizer: str = Field(
         ...,
         min_length=2,
@@ -110,20 +114,110 @@ class Opportunity(BaseModel):
         description="Timestamp when this record was first ingested.",
     )
 
-    @field_validator("deadline")
+    @field_validator("prizes_total", mode="before")
     @classmethod
-    def validate_future_deadline(cls, value: Optional[datetime]) -> Optional[datetime]:
+    def coerce_prizes_total(cls, value: object) -> Optional[float]:
         """
-        Soft-validates that the deadline is in the future.
-        Expired deadlines are allowed (is_active should be False in those cases),
-        but the validator ensures the field parses as a valid ISO datetime.
-        Downstream pipeline logic handles active/inactive status.
+        Coerces prize value from various scraper formats:
+        - dict: {"value": 740000, "currency": "USD", ...} -> 740000.0
+        - string: "$740,000", "740000" -> 740000.0
+        - float / int -> float
+        - None / missing -> 0.0
         """
-        if value and value.replace(tzinfo=None) < datetime.utcnow():
-            # Expired deadline — the record may still be historically relevant.
-            # Log downstream; do NOT raise here to avoid blocking ingestion.
-            pass
-        return value
+        if value is None:
+            return 0.0
+        if isinstance(value, dict):
+            val = value.get("value")
+            try:
+                return float(val) if val is not None else 0.0
+            except (ValueError, TypeError):
+                return 0.0
+        if isinstance(value, (int, float)):
+            return float(value)
+        if isinstance(value, str):
+            import re
+            cleaned = re.sub(r"[^\d.]", "", value)
+            try:
+                return float(cleaned) if cleaned else 0.0
+            except ValueError:
+                return 0.0
+        return 0.0
+
+    @field_validator("deadline", mode="before")
+    @classmethod
+    def parse_flexible_deadline(cls, value: object) -> Optional[datetime]:
+        """
+        Parses deadlines from various scraper formats:
+        - ISO datetime string: '2026-10-01T00:00:00Z'
+        - Date range: 'Jul 31 - Oct 01, 2026' -> takes end date 'Oct 01, 2026'
+        - Short date range: 'Aug 04 - 31, 2026' -> takes end date 'Aug 31, 2026'
+        - Relative string: '18 days left' -> calculates future datetime
+        - None or unparseable -> returns None gracefully
+        """
+        if value is None or isinstance(value, datetime):
+            return value
+
+        if isinstance(value, str):
+            val = value.strip()
+            if not val:
+                return None
+
+            import re
+            from datetime import timedelta
+
+            # Relative: "X days left" / "X hours left"
+            rel_days_match = re.search(r"(\d+)\s+days?\s+left", val, re.IGNORECASE)
+            if rel_days_match:
+                days = int(rel_days_match.group(1))
+                return datetime.utcnow() + timedelta(days=days)
+
+            rel_hours_match = re.search(r"(\d+)\s+hours?\s+left", val, re.IGNORECASE)
+            if rel_hours_match:
+                hours = int(rel_hours_match.group(1))
+                return datetime.utcnow() + timedelta(hours=hours)
+
+            # Date range format: "Jul 31 - Oct 01, 2026" or "Aug 04 - 31, 2026"
+            if "-" in val:
+                parts = [p.strip() for p in val.split("-")]
+                end_part = parts[-1]  # e.g., "Oct 01, 2026" or "31, 2026"
+                # If end_part is just "31, 2026", get month from first part
+                if not re.search(r"[a-zA-Z]", end_part) and len(parts) > 1:
+                    start_month = re.search(r"([a-zA-Z]+)", parts[0])
+                    if start_month:
+                        end_part = f"{start_month.group(1)} {end_part}"
+                val = end_part
+
+            # Try parsing with various date formats
+            date_formats = [
+                "%Y-%m-%dT%H:%M:%SZ",
+                "%Y-%m-%dT%H:%M:%S",
+                "%Y-%m-%d",
+                "%b %d, %Y",    # Oct 01, 2026
+                "%B %d, %Y",    # October 01, 2026
+                "%b %d %Y",
+                "%d %b %Y",
+                "%d %B %Y",
+            ]
+            for fmt in date_formats:
+                try:
+                    return datetime.strptime(val, fmt)
+                except ValueError:
+                    continue
+
+            # Fallback: regex for "Month Day, Year"
+            match = re.search(r"([a-zA-Z]+)\s+(\d{1,2}),?\s+(\d{4})", val)
+            if match:
+                month_str, day_str, year_str = match.groups()
+                for m_fmt in ["%b", "%B"]:
+                    try:
+                        parsed_m = datetime.strptime(month_str, m_fmt).month
+                        return datetime(int(year_str), parsed_m, int(day_str))
+                    except ValueError:
+                        pass
+
+        # Return None rather than crashing ingestion on unparseable date text
+        return None
+
 
     @field_validator("url", mode="before")
     @classmethod
@@ -131,6 +225,36 @@ class Opportunity(BaseModel):
         """Accept plain strings alongside HttpUrl objects."""
         if isinstance(value, str):
             return value
+        return value
+
+    @field_validator("opportunity_type", mode="before")
+    @classmethod
+    def normalize_opportunity_type(cls, value: object) -> object:
+        """
+        Maps raw scraper strings (e.g. 'hackathon', 'competition') to the
+        OpportunityType enum. Case-insensitive. Falls back to OTHER.
+        """
+        if isinstance(value, str):
+            mapping = {
+                "hackathon": "Hackathon",
+                "competition": "Competition",
+                "conference": "Conference",
+                "fellowship": "Fellowship",
+                "grant": "Grant",
+                "event": "Other",
+            }
+            return mapping.get(value.lower().strip(), "Other")
+        return value
+
+    @field_validator("is_active", mode="before")
+    @classmethod
+    def normalize_is_active(cls, value: object) -> object:
+        """
+        Converts scraper status strings ('active', 'upcoming', 'closed') to bool.
+        'active' and 'upcoming' → True, 'closed'/'expired' → False.
+        """
+        if isinstance(value, str):
+            return value.lower().strip() in ("active", "upcoming", "open")
         return value
 
     model_config = {
