@@ -35,7 +35,12 @@ from scrape_werse.shared.models.models import Opportunity
 
 load_dotenv()
 
-# ── Logging Setup ─────────────────────────────────────────────────────────────
+# Ensure UTF-8 output encoding on Windows terminals to prevent charmap logging errors
+if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
 
 _log_level = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
@@ -54,7 +59,6 @@ DEFAULT_TARGET_URLS: dict[str, str] = {
     "devpost": "https://devpost.com/hackathons?challenge_type=online&order_by=deadline",
     "unstop_hackathon": "https://unstop.com/hackathons?oppstatus=open",
     "unstop_competition": "https://unstop.com/competitions?oppstatus=open",
-    "hack2skill": "https://hack2skill.com/hackathon",
     "dummywebsite": "https://scrape-event-website.onrender.com/",
 }
 
@@ -63,39 +67,24 @@ SOURCE_COLLECTIONS: dict[str, str] = {
     "devpost": "opportunities",
     "unstop_hackathon": "opportunities",
     "unstop_competition": "opportunities",
-    "hack2skill": "opportunities",
     "dummywebsite": "demo_opportunities",  # Isolated for hackathon self-healing demo
 }
+
+# Production sources to run during standard batch ingestion
+PRODUCTION_SOURCES = ["devpost", "unstop_hackathon", "unstop_competition"]
 
 
 # ── Row Normalization ─────────────────────────────────────────────────────────
 
 
-def normalize_row(raw: dict) -> dict | None:
+def normalize_single_card(card: dict) -> dict | None:
     """
-    Normalize a raw scraper output row into a flat dict that matches the
-    Opportunity Pydantic schema.
-
-    Handles multiple scraper response shapes:
-      1. Flat: {"title": ..., "source": ..., ...}
-      2. Nested cards: {"hackathon_cards": [...]}, {"competitions": [...]}, {"events": [...]}
-      3. Product page / link-only rows (ignored)
-
-    Also maps scraper-specific field aliases to model field names:
-      - eventtype  → opportunity_type
-      - status     → is_active
-      - total_prize_value → prizes_total
+    Normalize a single opportunity card dictionary into the Opportunity model schema.
     """
-    # Check for known nested array keys
-    for array_key in ("hackathon_cards", "competitions", "event_cards", "cards", "events"):
-        if array_key in raw and raw[array_key] and isinstance(raw[array_key], list):
-            record = raw[array_key][0].copy()
-            break
-    else:
-        if "title" in raw and raw.get("title"):
-            record = raw.copy()
-        else:
-            return None
+    if not isinstance(card, dict) or not card.get("title"):
+        return None
+
+    record = card.copy()
 
     # Map scraper field aliases → Opportunity field names
     alias_map = {
@@ -103,12 +92,67 @@ def normalize_row(raw: dict) -> dict | None:
         "event_type": "opportunity_type",
         "status": "is_active",
         "total_prize_value": "prizes_total",
+        "prize": "prizes_total",
+        "skills": "required_skills",
+        "tags": "required_skills",
     }
     for scraper_key, model_key in alias_map.items():
         if scraper_key in record and model_key not in record:
             record[model_key] = record.pop(scraper_key)
 
+    # Infer source from URL if missing
+    if not record.get("source") and record.get("url"):
+        url_str = str(record.get("url", "")).lower()
+        if "unstop" in url_str:
+            record["source"] = "unstop"
+        elif "devpost" in url_str:
+            record["source"] = "devpost"
+        elif "render.com" in url_str or "dummy" in url_str:
+            record["source"] = "dummywebsite"
+        else:
+            record["source"] = "community"
+
+    # Default organizer if not extracted by template
+    if not record.get("organizer"):
+        record["organizer"] = "Community / Host"
+
+    # Ensure required_skills is a list
+    if "required_skills" in record and isinstance(record["required_skills"], str):
+        record["required_skills"] = [s.strip() for s in record["required_skills"].split(",") if s.strip()]
+
     return record
+
+
+def extract_and_normalize_records(raw: dict) -> list[dict]:
+    """
+    Extract and normalize ALL opportunity records from a raw scraper output row.
+
+    Handles both flat items and nested card lists (e.g. event_cards, hackathon_cards, competitions).
+    """
+    extracted: list[dict] = []
+
+    # Check for known nested array keys
+    for array_key in ("event_cards", "hackathon_cards", "competitions", "cards", "events"):
+        if array_key in raw and isinstance(raw[array_key], list):
+            for item in raw[array_key]:
+                norm = normalize_single_card(item)
+                if norm:
+                    extracted.append(norm)
+            if extracted:
+                return extracted
+
+    # Fallback to flat row
+    norm = normalize_single_card(raw)
+    if norm:
+        extracted.append(norm)
+
+    return extracted
+
+
+# Backward compatibility alias
+def normalize_row(raw: dict) -> dict | None:
+    records = extract_and_normalize_records(raw)
+    return records[0] if records else None
 
 
 # ── Core Pipeline ─────────────────────────────────────────────────────────────
@@ -153,28 +197,26 @@ async def run_pipeline(
     validation_errors: list[str] = []
 
     for row in raw_dataset:
-        try:
-            # Normalize the raw row (unwrap nested structure, remap aliases)
-            normalized = normalize_row(row)
-            if normalized is None:
-                logger.debug("Skipping empty/link-only row.")
-                continue
+        records = extract_and_normalize_records(row)
+        if not records:
+            logger.debug("Skipping empty/link-only row.")
+            continue
 
-            # Essential field guard — catches nulls BEFORE Pydantic sees them
-            if not normalized.get("title") or not normalized.get("organizer"):
-                raise ValueError(
-                    f"Essential fields 'title' or 'organizer' returned "
-                    f"empty or null. Row keys: {list(normalized.keys())}"
-                )
+        for item in records:
+            try:
+                if not item.get("title") or not item.get("url"):
+                    raise ValueError(
+                        f"Essential fields 'title' or 'url' returned empty/null. Row keys: {list(item.keys())}"
+                    )
 
-            validated = Opportunity(**normalized)
-            valid_records.append(validated.model_dump(mode="json"))
+                validated = Opportunity(**item)
+                valid_records.append(validated.model_dump(mode="json"))
 
-        except Exception as exc:
-            error_msg = str(exc)
-            logger.warning(f"Validation failure — schema drift detected: {error_msg}")
-            validation_errors.append(error_msg)
-            broken_flag = True
+            except Exception as exc:
+                error_msg = str(exc)
+                logger.warning(f"Validation failure — schema drift detected: {error_msg}")
+                validation_errors.append(error_msg)
+                broken_flag = True
 
     logger.info(
         f"Validation complete: {len(valid_records)} valid, "
@@ -182,25 +224,30 @@ async def run_pipeline(
     )
 
     # ── Step 4: Autonomous Self-Healing (if needed) ───────────────────────────
-    # Only trigger a full heal when the ENTIRE dataset failed validation,
-    # meaning the page layout almost certainly changed. Partial failures
-    # (optional-field gaps) are handled gracefully by proceeding with
-    # the valid records we already have.
-    if broken_flag and len(valid_records) == 0 and len(raw_dataset) > 0:
+    # Two conditions trigger a full heal:
+    #   A) Scraper returned 0 rows — broken selectors found nothing at all.
+    #   B) Scraper returned rows but ALL of them failed validation (total drift).
+    # Partial failures (some rows passing) are handled gracefully without healing.
+    total_drift = (broken_flag and len(valid_records) == 0 and len(raw_dataset) > 0)
+    empty_extraction = (len(raw_dataset) == 0)
+
+    if total_drift or empty_extraction:
+        reason = (
+            "Scraper returned 0 rows — selectors likely broken by layout change."
+            if empty_extraction
+            else f"{len(validation_errors)} rows failed validation, 0 passed — total schema drift detected."
+        )
         logger.warning(
-            f"⚠️  Total schema drift on collector '{collector_id}' "
-            f"({len(validation_errors)} rows failed, 0 passed). "
+            f"Schema drift detected on collector '{collector_id}': {reason} "
             "Initiating autonomous self-healing loop..."
         )
 
         unique_errors = list(set(validation_errors))
         heal_prompt = (
-            "The scraper selectors are broken after a website layout change. "
-            "Required fields 'title' and/or 'organizer' are returning null or empty. "
-            f"Observed validation errors: {'; '.join(unique_errors[:5])}. "
-            "Please re-inspect the target page DOM, find the correct elements for "
-            "title, url, organizer, description, deadline, required_skills, source, "
-            "eventtype, and status, then update the extraction selectors accordingly."
+            "Extract all event cards from the page. From each card extract: "
+            "title, url, organizer, description, deadline, required_skills, "
+            "source, eventtype, and status. "
+            f"Observed errors: {'; '.join(unique_errors[:3])}."
         )
 
         heal_success = await bd_client.self_heal_and_approve(collector_id, heal_prompt)
@@ -217,13 +264,13 @@ async def run_pipeline(
                 healed_dataset = await bd_client.get_dataset(re_id)
                 valid_records.clear()
                 for row in healed_dataset:
-                    try:
-                        norm = normalize_row(row)
-                        if norm:
-                            validated = Opportunity(**norm)
+                    healed_records = extract_and_normalize_records(row)
+                    for item in healed_records:
+                        try:
+                            validated = Opportunity(**item)
                             valid_records.append(validated.model_dump(mode="json"))
-                    except Exception as exc:
-                        logger.warning(f"Post-heal validation error: {exc}")
+                        except Exception as exc:
+                            logger.warning(f"Post-heal validation error: {exc}")
                 logger.info(
                     f"Post-heal extraction: {len(valid_records)} valid record(s)."
                 )
@@ -268,8 +315,38 @@ async def run_pipeline(
 async def main() -> None:
     """
     Main entrypoint: reads config from environment and runs the pipeline.
-    Pass '--demo' to run only the dummy website scraper in the isolated demo collection.
+
+    CLI Modes:
+      - Default: python -m scrape_werse.pipeline_orchestrator
+                 Runs production scrapers (Devpost, Unstop Hackathons, Unstop Competitions) -> 'opportunities'
+      - Demo:    python -m scrape_werse.pipeline_orchestrator --demo
+                 Runs ONLY the Dummy Website scraper -> 'demo_opportunities'
+      - Single:  python -m scrape_werse.pipeline_orchestrator --source devpost
+                 Runs only the specified source
+      - All:     python -m scrape_werse.pipeline_orchestrator --all
+                 Runs all sources including demo
     """
+    import argparse
+
+    parser = argparse.ArgumentParser(description="ScrapeWerse Pipeline Orchestrator")
+    parser.add_argument(
+        "--demo",
+        action="store_true",
+        help="Run only the dummy website scraper for self-healing demonstration (stores in 'demo_opportunities')",
+    )
+    parser.add_argument(
+        "--source",
+        type=str,
+        choices=list(DEFAULT_TARGET_URLS.keys()),
+        help="Run only a specific source (e.g. devpost, unstop_hackathon, unstop_competition, dummywebsite)",
+    )
+    parser.add_argument(
+        "--all",
+        action="store_true",
+        help="Run all available scrapers including production and demo",
+    )
+    args = parser.parse_args()
+
     bd_key = os.getenv("BRIGHTDATA_API_KEY")
     fb_project = os.getenv("FIREBASE_PROJECT_ID")
 
@@ -277,7 +354,6 @@ async def main() -> None:
         "devpost": os.getenv("BRIGHTDATA_DEVPOST_COLLECTOR_ID"),
         "unstop_hackathon": os.getenv("BRIGHTDATA_UNSTOP_HACKATHON_COLLECTOR_ID"),
         "unstop_competition": os.getenv("BRIGHTDATA_UNSTOP_COMPETITION_COLLECTOR_ID"),
-        "hack2skill": os.getenv("BRIGHTDATA_HACK2SKILL_COLLECTOR_ID"),
         "dummywebsite": os.getenv("BRIGHTDATA_DUMMYWEBSITE_COLLECTOR_ID"),
     }
 
@@ -295,9 +371,18 @@ async def main() -> None:
         else None
     )
 
-    # Check for --demo flag
-    is_demo = "--demo" in sys.argv
-    sources_to_run = ["dummywebsite"] if is_demo else [s for s, cid in collector_ids.items() if cid]
+    # Determine which sources to execute
+    if args.demo:
+        sources_to_run = ["dummywebsite"]
+    elif args.source:
+        sources_to_run = [args.source]
+    elif args.all:
+        sources_to_run = [s for s, cid in collector_ids.items() if cid]
+    else:
+        # Default: production sources only
+        sources_to_run = [s for s in PRODUCTION_SOURCES if collector_ids.get(s)]
+
+    logger.info(f"Target sources for this run: {sources_to_run}")
 
     for source in sources_to_run:
         cid = collector_ids.get(source)

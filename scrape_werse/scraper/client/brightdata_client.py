@@ -168,28 +168,34 @@ class BrightDataClient:
         """
         import time
 
-        heal_endpoint   = f"{self.BASE_URL}/dca/adjust"
-        status_endpoint = f"{self.BASE_URL}/dca/adjust/progress"
-        approve_endpoint = f"{self.BASE_URL}/dca/adjust/approve"
+        heal_endpoint = f"{self.BASE_URL}/dca/collectors/{collector_id}/refactor_template"
+        status_endpoint = f"{self.BASE_URL}/dca/collectors/{collector_id}/refactor_template/progress"
+        approve_endpoint = f"{self.BASE_URL}/dca/collectors/{collector_id}/resume_automation_job"
 
         logger.warning(
-            f"⚠️  Initiating self-heal for collector '{collector_id}'. "
+            f"[Heal] Initiating autonomous self-heal for collector '{collector_id}'. "
             f"Prompt: {prompt[:120]}..."
         )
 
-        # Step 1: Kick off healing job
-        async with httpx.AsyncClient(timeout=60.0) as client:
-            heal_resp = await client.post(
-                heal_endpoint,
-                headers=self.headers,
-                json={"collector_id": collector_id, "prompt": prompt},
-            )
-            if heal_resp.status_code not in (200, 201, 202):
-                logger.error(
-                    f"Heal trigger failed [{heal_resp.status_code}]: {heal_resp.text[:200]}"
+        # Step 1: Kick off healing job via REST
+        try:
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                heal_resp = await client.post(
+                    heal_endpoint,
+                    headers=self.headers,
+                    json={"prompt": prompt, "custom_input": []},
                 )
-                return False
-            logger.info(f"Heal job started for collector '{collector_id}'.")
+                if heal_resp.status_code in (200, 201, 202):
+                    logger.info(f"Self-heal job triggered for collector '{collector_id}'.")
+                else:
+                    logger.warning(
+                        f"Direct REST heal returned [{heal_resp.status_code}]: {heal_resp.text[:150]}. "
+                        "Falling back to Bright Data CLI heal runner..."
+                    )
+                    return await self._heal_via_cli(collector_id, prompt, poll_timeout)
+        except Exception as exc:
+            logger.warning(f"REST trigger encountered error: {exc}. Falling back to CLI heal runner...")
+            return await self._heal_via_cli(collector_id, prompt, poll_timeout)
 
         # Step 2: Poll until awaiting_approval or done
         deadline = time.monotonic() + poll_timeout
@@ -197,11 +203,7 @@ class BrightDataClient:
         async with httpx.AsyncClient(timeout=30.0) as client:
             while time.monotonic() < deadline:
                 attempt += 1
-                prog_resp = await client.get(
-                    status_endpoint,
-                    headers=self.headers,
-                    params={"collector": collector_id},
-                )
+                prog_resp = await client.get(status_endpoint, headers=self.headers)
                 if prog_resp.status_code != 200:
                     await asyncio.sleep(poll_interval)
                     continue
@@ -209,7 +211,7 @@ class BrightDataClient:
                 data = prog_resp.json()
                 status = data.get("status", "")
                 logger.info(
-                    f"[Heal poll {attempt}] Collector '{collector_id}' → status: {status}"
+                    f"[Heal poll {attempt}] Collector '{collector_id}' -> status: {status}"
                 )
 
                 if status in ("awaiting_approval", "pending_answer"):
@@ -217,27 +219,26 @@ class BrightDataClient:
                     app_resp = await client.post(
                         approve_endpoint,
                         headers=self.headers,
-                        json={"collector_id": collector_id, "auto_save": True},
+                        json={"message": True, "auto_save": True},
                     )
                     if app_resp.status_code in (200, 201, 202):
                         logger.info(
-                            "✅ Heal approved and saved. Scraper template updated."
+                            "Autonomous heal approved and saved. Scraper template updated successfully."
                         )
                         return True
                     else:
                         logger.error(
-                            f"Heal approve failed [{app_resp.status_code}]: "
-                            f"{app_resp.text[:200]}"
+                            f"Heal approve failed [{app_resp.status_code}]: {app_resp.text[:200]}"
                         )
                         return False
 
-                elif status == "done":
-                    logger.info("✅ Heal completed and auto-saved by Bright Data AI.")
+                elif status in ("done", "finished"):
+                    logger.info("Autonomous heal completed and finalized by Bright Data AI.")
                     return True
 
                 elif status in ("failed", "error"):
                     logger.error(
-                        f"❌ Self-healing failed for collector '{collector_id}'. "
+                        f"Self-healing failed for collector '{collector_id}'. "
                         f"Details: {data.get('message', 'no details')}"
                     )
                     return False
@@ -248,6 +249,39 @@ class BrightDataClient:
             f"Self-healing timed out after {poll_timeout}s for '{collector_id}'."
         )
         return False
+
+    async def _heal_via_cli(self, collector_id: str, prompt: str, timeout: int = 600) -> bool:
+        """
+        Fallback healing runner using Bright Data CLI subprocess.
+        """
+        logger.info(f"Executing: npx -p @brightdata/cli bdata scraper heal {collector_id} --auto-approve --auto-save")
+        try:
+            process = await asyncio.create_subprocess_exec(
+                "npx.cmd" if os.name == "nt" else "npx",
+                "-p",
+                "@brightdata/cli",
+                "bdata",
+                "scraper",
+                "heal",
+                collector_id,
+                prompt,
+                "--auto-approve",
+                "--auto-save",
+                "--json",
+                f"--timeout={timeout}",
+                stdout=asyncio.subprocess.PIPE,
+                stderr=asyncio.subprocess.PIPE,
+            )
+            stdout, stderr = await process.communicate()
+            if process.returncode == 0:
+                logger.info("CLI autonomous self-heal completed successfully.")
+                return True
+            else:
+                logger.error(f"CLI heal failed with code {process.returncode}: {stderr.decode('utf-8', errors='replace')}")
+                return False
+        except Exception as exc:
+            logger.error(f"CLI heal subprocess execution failed: {exc}")
+            return False
 
     # Keep backward-compat aliases so existing orchestrator calls still work
     async def initiate_self_heal(self, collector_id: str, prompt: str) -> None:
