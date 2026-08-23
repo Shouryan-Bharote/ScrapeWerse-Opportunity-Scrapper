@@ -1,3 +1,7 @@
+---
+description: 
+---
+
 # Graphify Workflow
 
 ## Purpose
@@ -11,7 +15,7 @@ Run this once after the project has meaningful code:
 
 ```powershell
 # From the project root (with .venv activated)
-/graphify "d:\Programming\ScrapeWerse hackathon"
+/graphify "d:\Programming\ScrapeWerse hackathon\python backend"
 ```
 
 This generates `graphify-out/graph.html`, `graphify-out/graph.json`, and `graphify-out/GRAPH_REPORT.md`.
@@ -23,7 +27,7 @@ This generates `graphify-out/graph.html`, `graphify-out/graph.json`, and `graphi
 After adding new files or making significant changes:
 
 ```powershell
-/graphify "d:\Programming\ScrapeWerse hackathon" --update
+/graphify "d:\Programming\ScrapeWerse hackathon\python backend" --update
 ```
 
 ---
