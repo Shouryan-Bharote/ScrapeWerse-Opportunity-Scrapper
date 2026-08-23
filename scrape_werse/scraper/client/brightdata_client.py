@@ -65,7 +65,7 @@ class BrightDataClient:
         """
         endpoint = f"{self.BASE_URL}/dca/trigger"
         # collector_id is passed as a query parameter; inputs go in the body.
-        params = {"collector": collector_id}
+        params = {"collector": collector_id, "override_incompatible_schema": "1"}
         payload = [{"url": url} for url in urls]
 
         logger.info(
