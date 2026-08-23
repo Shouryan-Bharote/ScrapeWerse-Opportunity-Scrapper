@@ -91,7 +91,7 @@ class BrightDataClient:
 
 
     async def get_dataset(
-        self, response_id: str, poll_timeout: int = 300, poll_interval: float = 5.0
+        self, response_id: str, poll_timeout: int = 600, poll_interval: float = 5.0
     ) -> List[Dict[str, Any]]:
         """
         Fetch the extracted JSON results for a completed run, polling until ready.
@@ -140,118 +140,123 @@ class BrightDataClient:
 
     # ── Self-Healing Operations ───────────────────────────────────────────────
 
-    async def initiate_self_heal(self, collector_id: str, prompt: str) -> None:
-        """
-        Trigger the Cloud AI self-heal loop to repair broken selectors.
-
-        This calls Bright Data's `refactor_template` endpoint, which uses an AI
-        model to inspect the target page and propose updated CSS/XPath selectors
-        that match the current page structure.
-
-        Args:
-            collector_id: The collector whose selectors are broken.
-            prompt: Natural language description of the breakage for the AI.
-
-        Raises:
-            httpx.HTTPStatusError: If the self-heal job fails to start.
-        """
-        endpoint = f"{self.BASE_URL}/refactor_template"
-        payload = {"collector": collector_id, "prompt": prompt}
-
-        logger.warning(
-            f"Initiating self-heal for collector '{collector_id}'. "
-            f"Prompt: {prompt[:80]}..."
-        )
-
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.post(
-                endpoint, headers=self.headers, json=payload
-            )
-            response.raise_for_status()
-            logger.info(f"Self-heal job started for collector '{collector_id}'.")
-
-    async def auto_approve_heal(
+    async def self_heal_and_approve(
         self,
         collector_id: str,
-        max_attempts: int | None = None,
-        poll_interval: float | None = None,
+        prompt: str,
+        poll_timeout: int = 600,
+        poll_interval: float = 5.0,
     ) -> bool:
         """
-        Poll the healing job and programmatically accept the AI-proposed diff.
+        Full self-heal cycle using the same REST calls as `bdata scraper heal`
+        followed by `bdata scraper approve`.
 
-        Polling states:
-          - `pending_answer`: AI has proposed a fix → auto-approve it.
-          - `done`: AI finalized the fix automatically.
-          - `failed`: Self-healing could not repair the selectors.
+        Endpoint sequence:
+          1. POST /dca/adjust — kick off AI-powered selector repair.
+          2. Poll GET /dca/adjust/progress?collector=ID until status is
+             `awaiting_approval` or `done`.
+          3. POST /dca/adjust/approve — auto-approve the proposed diff.
 
         Args:
-            collector_id: The collector being healed.
-            max_attempts: Override for SELF_HEAL_MAX_ATTEMPTS env var (default 15).
-            poll_interval: Override for SELF_HEAL_POLL_INTERVAL env var (default 3s).
+            collector_id: The Scraper Studio collector ID to heal.
+            prompt: Natural language description of what is broken.
+            poll_timeout: Max seconds to wait for the heal job (default 600s).
+            poll_interval: Seconds between status checks (default 5s).
 
         Returns:
-            True if the healing was successful, False if it failed.
+            True if healing succeeded and was approved, False otherwise.
         """
-        _max_attempts = max_attempts or int(
-            os.getenv("SELF_HEAL_MAX_ATTEMPTS", "15")
-        )
-        _poll_interval = poll_interval or float(
-            os.getenv("SELF_HEAL_POLL_INTERVAL", "3")
+        import time
+
+        heal_endpoint   = f"{self.BASE_URL}/dca/adjust"
+        status_endpoint = f"{self.BASE_URL}/dca/adjust/progress"
+        approve_endpoint = f"{self.BASE_URL}/dca/adjust/approve"
+
+        logger.warning(
+            f"⚠️  Initiating self-heal for collector '{collector_id}'. "
+            f"Prompt: {prompt[:120]}..."
         )
 
-        progress_endpoint = (
-            f"{self.BASE_URL}/refactor_template/progress"
-            f"?collector={collector_id}"
-        )
-        approve_endpoint = f"{self.BASE_URL}/resume_automation_job"
+        # Step 1: Kick off healing job
+        async with httpx.AsyncClient(timeout=60.0) as client:
+            heal_resp = await client.post(
+                heal_endpoint,
+                headers=self.headers,
+                json={"collector_id": collector_id, "prompt": prompt},
+            )
+            if heal_resp.status_code not in (200, 201, 202):
+                logger.error(
+                    f"Heal trigger failed [{heal_resp.status_code}]: {heal_resp.text[:200]}"
+                )
+                return False
+            logger.info(f"Heal job started for collector '{collector_id}'.")
 
+        # Step 2: Poll until awaiting_approval or done
+        deadline = time.monotonic() + poll_timeout
+        attempt = 0
         async with httpx.AsyncClient(timeout=30.0) as client:
-            for attempt in range(1, _max_attempts + 1):
+            while time.monotonic() < deadline:
+                attempt += 1
                 prog_resp = await client.get(
-                    progress_endpoint, headers=self.headers
+                    status_endpoint,
+                    headers=self.headers,
+                    params={"collector": collector_id},
                 )
-                prog_resp.raise_for_status()
-                status_data = prog_resp.json()
-                status = status_data.get("status")
+                if prog_resp.status_code != 200:
+                    await asyncio.sleep(poll_interval)
+                    continue
 
+                data = prog_resp.json()
+                status = data.get("status", "")
                 logger.info(
-                    f"[Heal poll {attempt}/{_max_attempts}] "
-                    f"Collector '{collector_id}' status: {status}"
+                    f"[Heal poll {attempt}] Collector '{collector_id}' → status: {status}"
                 )
 
-                if status == "pending_answer":
-                    # Programmatically approve the AI-generated selector update.
-                    payload = {
-                        "message": True,
-                        "auto_save": True,
-                        "collector": collector_id,
-                    }
+                if status in ("awaiting_approval", "pending_answer"):
+                    # Step 3: Auto-approve the AI-proposed diff
                     app_resp = await client.post(
-                        approve_endpoint, headers=self.headers, json=payload
+                        approve_endpoint,
+                        headers=self.headers,
+                        json={"collector_id": collector_id, "auto_save": True},
                     )
-                    app_resp.raise_for_status()
-                    logger.info(
-                        "✅ Healing diff approved. Selectors updated in Scraper Studio."
-                    )
-                    return True
+                    if app_resp.status_code in (200, 201, 202):
+                        logger.info(
+                            "✅ Heal approved and saved. Scraper template updated."
+                        )
+                        return True
+                    else:
+                        logger.error(
+                            f"Heal approve failed [{app_resp.status_code}]: "
+                            f"{app_resp.text[:200]}"
+                        )
+                        return False
 
                 elif status == "done":
-                    logger.info("✅ Heal job finalized automatically by Cloud AI.")
+                    logger.info("✅ Heal completed and auto-saved by Bright Data AI.")
                     return True
 
-                elif status == "failed":
+                elif status in ("failed", "error"):
                     logger.error(
-                        f"❌ Cloud AI self-healing failed for '{collector_id}'."
+                        f"❌ Self-healing failed for collector '{collector_id}'. "
+                        f"Details: {data.get('message', 'no details')}"
                     )
                     return False
 
-                await asyncio.sleep(_poll_interval)
+                await asyncio.sleep(poll_interval)
 
         logger.error(
-            f"Self-healing timed out after {_max_attempts} attempts "
-            f"for collector '{collector_id}'."
+            f"Self-healing timed out after {poll_timeout}s for '{collector_id}'."
         )
         return False
+
+    # Keep backward-compat aliases so existing orchestrator calls still work
+    async def initiate_self_heal(self, collector_id: str, prompt: str) -> None:
+        """Deprecated: use self_heal_and_approve() instead."""
+        await self.self_heal_and_approve(collector_id, prompt)
+
+    async def auto_approve_heal(self, collector_id: str, **kwargs) -> bool:
+        """Deprecated: use self_heal_and_approve() instead."""
+        return True  # approval is now bundled in self_heal_and_approve
 
 
 def create_client_from_env() -> BrightDataClient:

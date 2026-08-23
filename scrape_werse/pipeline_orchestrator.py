@@ -25,6 +25,8 @@ import logging
 import os
 import sys
 
+from typing import Optional
+
 from dotenv import load_dotenv
 
 from scrape_werse.scraper.client.brightdata_client import BrightDataClient
@@ -53,6 +55,16 @@ DEFAULT_TARGET_URLS: dict[str, str] = {
     "unstop_hackathon": "https://unstop.com/hackathons?oppstatus=open",
     "unstop_competition": "https://unstop.com/competitions?oppstatus=open",
     "hack2skill": "https://hack2skill.com/hackathon",
+    "dummywebsite": "https://scrape-event-website.onrender.com/",
+}
+
+# Target collection in Firestore per source
+SOURCE_COLLECTIONS: dict[str, str] = {
+    "devpost": "opportunities",
+    "unstop_hackathon": "opportunities",
+    "unstop_competition": "opportunities",
+    "hack2skill": "opportunities",
+    "dummywebsite": "demo_opportunities",  # Isolated for hackathon self-healing demo
 }
 
 
@@ -99,7 +111,6 @@ def normalize_row(raw: dict) -> dict | None:
     return record
 
 
-
 # ── Core Pipeline ─────────────────────────────────────────────────────────────
 
 
@@ -107,8 +118,9 @@ async def run_pipeline(
     urls: list[str],
     collector_id: str,
     bd_client: BrightDataClient,
-    db_client: FirestoreRESTClient,
-) -> None:
+    db_client: Optional[FirestoreRESTClient] = None,
+    collection_name: str = "opportunities",
+) -> list[dict]:
     """
     Execute one full ingestion pipeline run.
 
@@ -116,11 +128,12 @@ async def run_pipeline(
         urls: Target URLs to scrape.
         collector_id: Bright Data Scraper Studio template/collector ID.
         bd_client: Initialized BrightDataClient.
-        db_client: Initialized FirestoreRESTClient.
+        db_client: Optional Initialized FirestoreRESTClient. If None, runs in dry-run mode.
+        collection_name: Firestore target collection.
     """
     logger.info(
         f"━━━ Pipeline Run Started ━━━ "
-        f"Collector: '{collector_id}' | URLs: {len(urls)}"
+        f"Collector: '{collector_id}' | URLs: {len(urls)} | Target Collection: '{collection_name}'"
     )
 
     # ── Step 1: Trigger Scraper ───────────────────────────────────────────────
@@ -128,7 +141,7 @@ async def run_pipeline(
     response_id = trigger_resp.get("id")
     if not response_id:
         logger.error("Trigger response missing 'id'. Cannot proceed.")
-        return
+        return []
 
     # ── Step 2: Fetch Dataset ─────────────────────────────────────────────────
     raw_dataset = await bd_client.get_dataset(response_id)
@@ -169,73 +182,84 @@ async def run_pipeline(
     )
 
     # ── Step 4: Autonomous Self-Healing (if needed) ───────────────────────────
-    if broken_flag:
+    # Only trigger a full heal when the ENTIRE dataset failed validation,
+    # meaning the page layout almost certainly changed. Partial failures
+    # (optional-field gaps) are handled gracefully by proceeding with
+    # the valid records we already have.
+    if broken_flag and len(valid_records) == 0 and len(raw_dataset) > 0:
         logger.warning(
-            "⚠️  Schema drift detected. Initiating autonomous self-healing loop..."
+            f"⚠️  Total schema drift on collector '{collector_id}' "
+            f"({len(validation_errors)} rows failed, 0 passed). "
+            "Initiating autonomous self-healing loop..."
         )
 
-        # Build a descriptive prompt for the Cloud AI based on observed failures
         unique_errors = list(set(validation_errors))
         heal_prompt = (
-            "Selector 'title' or 'organizer' broke on the latest website "
-            "redesign and is returning null/empty values. "
-            f"Observed errors: {'; '.join(unique_errors[:3])}. "
-            "Locate the correct header and organizer elements on this page "
-            "and remap the selectors to extract them accurately."
+            "The scraper selectors are broken after a website layout change. "
+            "Required fields 'title' and/or 'organizer' are returning null or empty. "
+            f"Observed validation errors: {'; '.join(unique_errors[:5])}. "
+            "Please re-inspect the target page DOM, find the correct elements for "
+            "title, url, organizer, description, deadline, required_skills, source, "
+            "eventtype, and status, then update the extraction selectors accordingly."
         )
 
-        await bd_client.initiate_self_heal(collector_id, heal_prompt)
-
-        heal_success = await bd_client.auto_approve_heal(collector_id)
+        heal_success = await bd_client.self_heal_and_approve(collector_id, heal_prompt)
 
         if heal_success:
             logger.info(
-                "🔧 Selectors auto-healed! Re-running scraper to capture "
-                "clean data with updated extraction template..."
+                "🔧 Selectors healed and approved! Re-running scraper with "
+                "updated extraction template..."
             )
 
-            # Re-trigger and re-validate with the healed selectors
             re_trigger = await bd_client.trigger_scraper(collector_id, urls)
-            healed_dataset = await bd_client.get_dataset(re_trigger.get("id"))
-
-            valid_records.clear()
-            for row in healed_dataset:
-                try:
-                    validated = Opportunity(**row)
-                    valid_records.append(validated.model_dump(mode="json"))
-                except Exception as exc:
-                    logger.warning(
-                        f"Post-heal validation still failing: {exc}. "
-                        "Manual investigation required."
-                    )
-
-            logger.info(
-                f"Post-heal extraction: {len(valid_records)} valid record(s)."
-            )
+            re_id = re_trigger.get("id")
+            if re_id:
+                healed_dataset = await bd_client.get_dataset(re_id)
+                valid_records.clear()
+                for row in healed_dataset:
+                    try:
+                        norm = normalize_row(row)
+                        if norm:
+                            validated = Opportunity(**norm)
+                            valid_records.append(validated.model_dump(mode="json"))
+                    except Exception as exc:
+                        logger.warning(f"Post-heal validation error: {exc}")
+                logger.info(
+                    f"Post-heal extraction: {len(valid_records)} valid record(s)."
+                )
         else:
             logger.error(
-                "❌ Autonomous healing was unable to recover selectors. "
-                "Alerting developers — manual intervention required."
+                f"❌ Autonomous healing failed for collector '{collector_id}'. "
+                "Skipping this source for this run."
             )
-            # TODO: Hook in alerting (email/Slack/PagerDuty) here
-            return
+            return valid_records
 
-    # ── Step 5: Stream to Firestore ───────────────────────────────────────────
+    elif broken_flag:
+        logger.warning(
+            f"Partial schema drift on collector '{collector_id}': "
+            f"{len(validation_errors)} row(s) failed, "
+            f"{len(valid_records)} row(s) passed. "
+            "Proceeding with valid records (no heal needed)."
+        )
+
+    # ── Step 5: Stream to Firestore (if db_client is configured) ─────────────
     if not valid_records:
-        logger.warning("No valid records to sync. Pipeline run complete (no-op).")
-        return
+        logger.warning("No valid records to sync. Pipeline run complete.")
+        return []
 
-    logger.info(
-        f"📤 Syncing {len(valid_records)} verified record(s) to Firestore "
-        f"collection 'opportunities'..."
-    )
+    if db_client is not None:
+        logger.info(
+            f"📤 Syncing {len(valid_records)} record(s) to Firestore "
+            f"collection '{collection_name}'..."
+        )
+        doc_ids = await db_client.batch_upsert(valid_records, collection_name=collection_name)
+        logger.info(
+            f"✅ {len(doc_ids)}/{len(valid_records)} records synced to Firestore collection '{collection_name}'."
+        )
+    else:
+        logger.info(f"ℹ️ [Dry-Run] {len(valid_records)} records ready. (Firestore not connected yet).")
 
-    doc_ids = await db_client.batch_upsert(valid_records)
-
-    logger.info(
-        f"✅ Pipeline run complete. "
-        f"{len(doc_ids)}/{len(valid_records)} records synced to Firestore."
-    )
+    return valid_records
 
 
 # ── Entrypoint ────────────────────────────────────────────────────────────────
@@ -243,69 +267,57 @@ async def run_pipeline(
 
 async def main() -> None:
     """
-    Main entrypoint: reads config from environment and runs one pipeline
-    per configured source (Devpost, Unstop, Hack2Skill).
-
-    Required env vars (set in .env):
-      - BRIGHTDATA_API_KEY
-      - BRIGHTDATA_DEVPOST_COLLECTOR_ID
-      - BRIGHTDATA_UNSTOP_HACKATHON_COLLECTOR_ID
-      - BRIGHTDATA_UNSTOP_COMPETITION_COLLECTOR_ID
-      - BRIGHTDATA_HACK2SKILL_COLLECTOR_ID
-      - FIREBASE_PROJECT_ID
-
-    Optional env vars:
-      - FIREBASE_API_KEY
-      - SELF_HEAL_MAX_ATTEMPTS (default: 15)
-      - SELF_HEAL_POLL_INTERVAL (default: 3)
-      - LOG_LEVEL (default: INFO)
+    Main entrypoint: reads config from environment and runs the pipeline.
+    Pass '--demo' to run only the dummy website scraper in the isolated demo collection.
     """
-    # ── Environment Validation ────────────────────────────────────────────────
     bd_key = os.getenv("BRIGHTDATA_API_KEY")
     fb_project = os.getenv("FIREBASE_PROJECT_ID")
 
-    # Per-source collector IDs
     collector_ids: dict[str, str | None] = {
         "devpost": os.getenv("BRIGHTDATA_DEVPOST_COLLECTOR_ID"),
         "unstop_hackathon": os.getenv("BRIGHTDATA_UNSTOP_HACKATHON_COLLECTOR_ID"),
         "unstop_competition": os.getenv("BRIGHTDATA_UNSTOP_COMPETITION_COLLECTOR_ID"),
         "hack2skill": os.getenv("BRIGHTDATA_HACK2SKILL_COLLECTOR_ID"),
+        "dummywebsite": os.getenv("BRIGHTDATA_DUMMYWEBSITE_COLLECTOR_ID"),
     }
 
-    missing: list[str] = []
     if not bd_key:
-        missing.append("BRIGHTDATA_API_KEY")
-    if not fb_project:
-        missing.append("FIREBASE_PROJECT_ID")
-    for source, cid in collector_ids.items():
-        if not cid:
-            missing.append(f"BRIGHTDATA_{source.upper()}_COLLECTOR_ID")
-
-    if missing:
-        logger.error(
-            f"Missing required environment variables: {', '.join(missing)}. "
-            "Copy .env.example to .env and fill in your credentials."
-        )
+        logger.error("Missing BRIGHTDATA_API_KEY in .env")
         sys.exit(1)
 
-    # ── Initialize Clients ────────────────────────────────────────────────────
-    bd_client = BrightDataClient(api_key=bd_key)  # type: ignore[arg-type]
-    db_client = FirestoreRESTClient(
-        project_id=fb_project,  # type: ignore[arg-type]
-        api_key=os.getenv("FIREBASE_API_KEY"),
+    bd_client = BrightDataClient(api_key=bd_key)
+    db_client = (
+        FirestoreRESTClient(
+            project_id=fb_project,
+            api_key=os.getenv("FIREBASE_API_KEY"),
+        )
+        if fb_project
+        else None
     )
 
-    # ── Run one pipeline per source sequentially ──────────────────────────────
-    for source, collector_id in collector_ids.items():
+    # Check for --demo flag
+    is_demo = "--demo" in sys.argv
+    sources_to_run = ["dummywebsite"] if is_demo else [s for s, cid in collector_ids.items() if cid]
+
+    for source in sources_to_run:
+        cid = collector_ids.get(source)
+        if not cid:
+            logger.warning(f"Skipping {source}: no collector ID set in .env")
+            continue
+
         url = DEFAULT_TARGET_URLS[source]
-        logger.info(f"\n{'='*60}\n  Source: {source.upper()}\n{'='*60}")
+        target_collection = SOURCE_COLLECTIONS.get(source, "opportunities")
+
+        logger.info(f"\n{'='*60}\n  Source: {source.upper()} -> Collection: '{target_collection}'\n{'='*60}")
         await run_pipeline(
             urls=[url],
-            collector_id=collector_id,  # type: ignore[arg-type]
+            collector_id=cid,
             bd_client=bd_client,
             db_client=db_client,
+            collection_name=target_collection,
         )
 
 
 if __name__ == "__main__":
     asyncio.run(main())
+

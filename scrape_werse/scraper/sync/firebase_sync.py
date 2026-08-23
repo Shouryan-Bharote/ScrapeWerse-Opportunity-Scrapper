@@ -122,36 +122,33 @@ class FirestoreRESTClient:
 
         return {"fields": fields}
 
-    # ── Write Operations ──────────────────────────────────────────────────────
+    # ── Write & Delete Operations ─────────────────────────────────────────────
 
     async def upsert_opportunity(
-        self, opportunity_data: Dict[str, Any]
+        self,
+        opportunity_data: Dict[str, Any],
+        collection_name: str = "opportunities",
     ) -> str:
         """
         Write or overwrite an opportunity in Firestore using a REST PATCH.
 
-        The PATCH method creates the document if it does not exist, or replaces
-        it entirely if it does — giving us clean upsert semantics.
-
         Args:
             opportunity_data: Dict produced by `Opportunity.model_dump()`.
                               Must contain a `url` key for ID generation.
+            collection_name: Target Firestore collection (e.g., 'opportunities'
+                             or 'demo_opportunities').
 
         Returns:
             The Firestore document ID (20-char hex string).
-
-        Raises:
-            httpx.HTTPStatusError: If the Firestore API returns an error.
-            KeyError: If `url` is missing from opportunity_data.
         """
         url_str = str(opportunity_data["url"])
         doc_id = self._generate_doc_id(url_str)
-        endpoint = f"{self.base_url}/opportunities/{doc_id}"
+        endpoint = f"{self.base_url}/{collection_name}/{doc_id}"
         firestore_payload = self._convert_to_firestore_fields(opportunity_data)
 
         logger.debug(
             f"Upserting opportunity '{opportunity_data.get('title', '?')}' "
-            f"→ doc ID: {doc_id}"
+            f"→ doc ID: {doc_id} in collection '{collection_name}'"
         )
 
         async with httpx.AsyncClient(timeout=10.0) as client:
@@ -164,23 +161,32 @@ class FirestoreRESTClient:
 
         logger.info(
             f"✅ Upserted: '{opportunity_data.get('title', '?')}' "
-            f"→ /opportunities/{doc_id}"
+            f"→ /{collection_name}/{doc_id}"
         )
         return doc_id
 
+    async def delete_document(
+        self, doc_id: str, collection_name: str = "opportunities"
+    ) -> bool:
+        """
+        Delete a single document by ID via REST DELETE. Useful for demo resets.
+        """
+        endpoint = f"{self.base_url}/{collection_name}/{doc_id}"
+        async with httpx.AsyncClient(timeout=10.0) as client:
+            response = await client.delete(endpoint, params=self.params)
+            return response.status_code in (200, 204)
+
     async def batch_upsert(
-        self, records: list[Dict[str, Any]]
+        self,
+        records: list[Dict[str, Any]],
+        collection_name: str = "opportunities",
     ) -> list[str]:
         """
-        Upsert a list of opportunity records sequentially.
-
-        Note: Firestore REST batch writes exist but require complex
-        transaction payloads. For hackathon scale, sequential upserts
-        are simpler and reliable. Upgrade to batch writes if throughput
-        becomes a bottleneck.
+        Upsert a list of opportunity records sequentially into specified collection.
 
         Args:
             records: List of dicts from `Opportunity.model_dump()`.
+            collection_name: Firestore collection name.
 
         Returns:
             List of Firestore document IDs that were written.
@@ -188,13 +194,14 @@ class FirestoreRESTClient:
         doc_ids: list[str] = []
         for record in records:
             try:
-                doc_id = await self.upsert_opportunity(record)
+                doc_id = await self.upsert_opportunity(record, collection_name=collection_name)
                 doc_ids.append(doc_id)
             except Exception as exc:
                 logger.error(
                     f"Failed to upsert '{record.get('title', '?')}': {exc}"
                 )
         return doc_ids
+
 
 
 def create_client_from_env() -> FirestoreRESTClient:
