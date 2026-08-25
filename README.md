@@ -107,6 +107,12 @@ python backend/
     ├── CODEBASE_GUIDE.md
     └── ...
 ```
+## Collector IDs
+
+BRIGHTDATA_DEVPOST_COLLECTOR_ID="c_mt4jpiou19flhu6gce"
+BRIGHTDATA_UNSTOP_HACKATHON_COLLECTOR_ID="c_mt4hrdrz2btpn3rhfl"
+BRIGHTDATA_UNSTOP_COMPETITION_COLLECTOR_ID="c_mt4it8pc14m5t3pppg"
+BRIGHTDATA_DUMMYWEBSITE_COLLECTOR_ID="c_mt5ncuzs26vmtydqmp"
 
 ---
 
