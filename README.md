@@ -115,6 +115,10 @@ BRIGHTDATA_UNSTOP_COMPETITION_COLLECTOR_ID="c_mt4it8pc14m5t3pppg"
 BRIGHTDATA_DUMMYWEBSITE_COLLECTOR_ID="c_mt5ncuzs26vmtydqmp"
 
 ---
+# 📱 Looking for the Mobile Client?
+The Flutter frontend source code for this project is hosted in a dedicated repository:
+👉 [Click here to view the Flutter Mobile Client Repo][https://github.com/Shouryan-Bharote/global-ai-opportunity-tracker-app/tree/ScrapeWerse]
+Make sure to check the ScraperWerse Branch
 
 ## ⚡ Quick Start
 
@@ -293,3 +297,6 @@ All documents use a **deterministic SHA-256 hash of the event URL** as their doc
 ## 📄 License
 
 MIT
+
+
+[https://github.com/Shouryan-Bharote/global-ai-opportunity-tracker-app/tree/ScrapeWerse]: YOUR_MOBILE_REPO_URL
