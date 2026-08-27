@@ -119,6 +119,8 @@ BRIGHTDATA_DUMMYWEBSITE_COLLECTOR_ID="c_mt5ncuzs26vmtydqmp"
 The Flutter frontend source code for this project is hosted in a dedicated repository:
 👉 [Click here to view the Flutter Mobile Client Repo](https://github.com/Shouryan-Bharote/global-ai-opportunity-tracker-app/tree/ScrapeWerse)
 
+*Please Make sure to use the ScrapeWerse Branch for this hackathon*
+
 ## ⚡ Quick Start
 
 ### Prerequisites
